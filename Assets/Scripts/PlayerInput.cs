@@ -7,8 +7,12 @@ public class PlayerInput : MonoBehaviour
     public float usedSpeed = 100f;
     public float jumpSpeed = 400f;
     public float AccGrav = 10;
-    public bool isGrounded;
+    public bool isGrounded = false;
+    public bool secondJumpAcquired = false;
 
+    bool jump = false;
+
+    private bool secondJumpAvailabe = true;
     private Vector2 speed;
     private Vector2 pos;
     Rigidbody2D body;
@@ -24,7 +28,19 @@ public class PlayerInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.W) && isGrounded)
+        {
+            jump = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.W) && !isGrounded && secondJumpAcquired && secondJumpAvailabe)
+        {
+            jump = true;
+            secondJumpAvailabe = false;
+        }
+        else if (Input.GetKey(KeyCode.S))
+        {
 
+        }
     }
 
     void OnCollisionEnter2D(Collision2D col)
@@ -32,6 +48,7 @@ public class PlayerInput : MonoBehaviour
         if (col.gameObject.tag == ("Ground") && isGrounded == false)
         {
             isGrounded = true;
+            secondJumpAvailabe = true;
         }
     }
 
@@ -40,22 +57,18 @@ public class PlayerInput : MonoBehaviour
         speed.x = 0f;
         if (Input.GetKey(KeyCode.D))
         {
-            speed.x = usedSpeed * Time.fixedDeltaTime;
+            speed.x = usedSpeed * Time.deltaTime;
         }
         else if (Input.GetKey(KeyCode.A))
         {
-            speed.x = -usedSpeed * Time.fixedDeltaTime;
+            speed.x = -usedSpeed * Time.deltaTime;
         }
-        if (Input.GetKey(KeyCode.W) && isGrounded)
-        {
-            speed.y = jumpSpeed * Time.fixedDeltaTime;
+        if (jump){
+            speed.y = jumpSpeed * Time.deltaTime;
             isGrounded = false;
+            jump = false;
         }
-        else if (Input.GetKey(KeyCode.S))
-        {
-
-        }
-        if(!isGrounded) speed.y -= AccGrav * Time.fixedDeltaTime;
+        if (!isGrounded) speed.y -= AccGrav * Time.fixedDeltaTime;
         body.velocity = speed;
     }
 
