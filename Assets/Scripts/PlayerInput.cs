@@ -45,11 +45,19 @@ public class PlayerInput : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.gameObject.tag == ("Ground") && isGrounded == false)
+        Vector2 normal = col.GetContact(0).normal;
+
+        if(Vector2.Angle(normal, new Vector2(0f, 1f)) < 10f)
         {
             isGrounded = true;
             secondJumpAvailabe = true;
         }
+
+        /*if (col.gameObject.tag == ("Ground") && isGrounded == false)
+        {
+            isGrounded = true;
+            secondJumpAvailabe = true;
+        }*/
     }
 
     void FixedUpdate()
