@@ -11,9 +11,11 @@ GameObject:
   - component: {fileID: 7474670787115623534}
   - component: {fileID: 7228511023911967758}
   - component: {fileID: 7361497053355586926}
+  - component: {fileID: 969262417}
+  - component: {fileID: 969262418}
   m_Layer: 0
-  m_Name: QuadradoInput
-  m_TagString: Untagged
+  m_Name: QuadradoClick
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -106,3 +108,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.78, y: 0.75}
   m_EdgeRadius: 0
+--- !u!114 &969262417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9065131755758413713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4542bc26afd71fb42bc5f135e8925c11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &969262418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9065131755758413713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e27f6a13a4c5cf348a74a8b2a9f19630, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
