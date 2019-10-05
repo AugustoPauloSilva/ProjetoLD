@@ -4,17 +4,15 @@ using UnityEngine;
 
 public class MousePointer : MonoBehaviour
 {
-    Vector3 pointerPosition;
-    // Start is called before the first frame update
+    public int size = 16;
     void Start()
     {
-        
+        Cursor.visible = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        pointerPosition = Camera.main.ViewportToScreenPoint(Input.mousePosition);
-        transform.position = pointerPosition;
+        transform.position = Input.mousePosition+new Vector3(size/2,-size/2,0);
+        // transform.position = Input.mousePosition;
     }
 }
