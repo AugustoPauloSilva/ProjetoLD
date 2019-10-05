@@ -1,4 +1,6 @@
-//Dash funciona na barra de espaço
+//Coisas p fazer
+//Adaptar as animacoes
+//Barrinha para dash, se ele esta disponivel
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,15 +13,16 @@ public class PlayerInput : MonoBehaviour
     public bool isGrounded = false;
     public bool secondJumpAcquired = false;
     public bool dashAcquired = false;
-    public float dashSpeed = 3000f;
-    public int dashTime = 0;
     public int dashDelay = 0;
 	public float maxFallSpeed = -700f;
+	public float dashSpeed = 2000f;
+	public int maxDashTime = 5;
 	
     FaceMouse mouse;
 	Vector2 normal;
 
-    bool jump = false;
+	bool jump = false;
+    public int dashTime;
     private bool dashRight = false;
     private bool dashLeft = false;
     private bool secondJumpAvailabe = true;
@@ -56,17 +59,18 @@ public class PlayerInput : MonoBehaviour
     void OnCollisionEnter2D(Collision2D col)
     {
 		normal = col.GetContact(0).normal;
-
-		if (Vector2.Angle(normal, new Vector2(0f, 1f)) < 10f)
-		{
-			isGrounded = true;
+		if (col.gameObject.tag == ("Ground") && Vector2.Angle(normal, new Vector2(0f, 1f)) < 10f)
+        {
+            isGrounded = true;
 			secondJumpAvailabe = true;
-		}
+        }
     }
 	
 	void OnCollisionExit2D(Collision2D col){
-		if(isGrounded)
-			isGrounded = false;
+		if (col.gameObject.tag == ("Ground"))
+        {
+            isGrounded = false;
+        }
 	}
 
     void FixedUpdate()
@@ -94,14 +98,16 @@ public class PlayerInput : MonoBehaviour
 				if (speed.y < maxFallSpeed) speed.y = maxFallSpeed;
 			}
 		}
-
-		else dashTime--;
+		else {
+			dashTime--;
+			speed.y = 0;
+		}
 
 		if (dashRight)
 		{
 			speed.x = dashSpeed * Time.deltaTime;
 			dashRight = false;
-			dashTime = 3;
+			dashTime = maxDashTime;
 			dashDelay = 30;
 		}
 
@@ -109,7 +115,7 @@ public class PlayerInput : MonoBehaviour
 		{
 			speed.x = -dashSpeed * Time.deltaTime;
 			dashLeft = false;
-			dashTime = 3;
+			dashTime = maxDashTime;
 			dashDelay = 30;
 		}
 
