@@ -66,17 +66,6 @@ public class PlayerInput : MonoBehaviour
             secondJumpAvailabe = true;
         }
     }
-	
-	/*void OnCollisionExit2D(Collision2D col){
-	
-		Vector2 normal = col.GetContact(0).normal;
-
-        if (Vector2.Angle(normal, new Vector2(0f, 1f)) < 10f)
-        {
-            isGrounded = false;
-        }
-	
-	}*/
 
     void FixedUpdate()
     {
