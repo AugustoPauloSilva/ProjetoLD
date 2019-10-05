@@ -14,6 +14,7 @@ public class PlayerInput : MonoBehaviour
     public float dashSpeed = 3000f;
     public int dashTime = 0;
     public int dashDelay = 0;
+    FaceMouse bunda;
 
     bool jump = false;
     private bool dashRight = false;
@@ -28,6 +29,7 @@ public class PlayerInput : MonoBehaviour
         pos = transform.position;
         body = GetComponent<Rigidbody2D>();
         speed = Vector2.zero;
+        bunda = GetComponent<FaceMouse>();
     }
 
     void Update()
@@ -41,8 +43,16 @@ public class PlayerInput : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && dashDelay <= 0)
         {
-            if (body.rotation < 90f && body.rotation >= -90f) dashRight = true;
-            else dashLeft = true;
+            if (bunda.arm.transform.rotation.z*180 < 90f && bunda.arm.transform.rotation.z*180 >= -90f)
+            {
+                Debug.Log("Direita " + bunda.arm.transform.rotation.z);
+                dashRight = true;
+            }
+            else
+            {
+                Debug.Log("Esquerda");
+                dashLeft = true;
+            }
         }
     }
 

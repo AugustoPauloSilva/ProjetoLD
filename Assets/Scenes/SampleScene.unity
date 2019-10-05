@@ -542,8 +542,8 @@ GameObject:
   - component: {fileID: 969542744}
   - component: {fileID: 969542743}
   - component: {fileID: 969542742}
-  - component: {fileID: 969542741}
   - component: {fileID: 969542746}
+  - component: {fileID: 969542741}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -558,12 +558,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 969542740}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e6d30d11264cea4e82fd006c4228854, type: 3}
+  m_Script: {fileID: 11500000, guid: 5e1ec7de291f53e4c92e774ae39c0ea4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usedSpeed: 200
+  isRight: 1
+  arm: {fileID: 987311911}
 --- !u!61 &969542742
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -696,7 +697,8 @@ MonoBehaviour:
   secondJumpAcquired: 1
   dashAcquired: 1
   dashSpeed: 2000
-  dashtimer: 0
+  dashTime: 0
+  dashDelay: 0
 --- !u!1 &987311911
 GameObject:
   m_ObjectHideFlags: 0
@@ -706,7 +708,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 987311912}
-  - component: {fileID: 987311913}
   m_Layer: 0
   m_Name: Arm
   m_TagString: Untagged
@@ -729,18 +730,6 @@ Transform:
   m_Father: {fileID: 969542745}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &987311913
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 987311911}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e1ec7de291f53e4c92e774ae39c0ea4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &999846747
 GameObject:
   m_ObjectHideFlags: 0
