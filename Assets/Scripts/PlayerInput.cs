@@ -7,7 +7,7 @@ public class PlayerInput : MonoBehaviour
 {
     public float usedSpeed = 300f;
     public float jumpSpeed = 700f;
-    public float AccGrav = 35;
+    public float AccGrav = 35f;
     public bool isGrounded = false;
     public bool secondJumpAcquired = false;
     public bool dashAcquired = false;
@@ -55,7 +55,6 @@ public class PlayerInput : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D col)
     {
-		Debug.Log("ENTER");
 		normal = col.GetContact(0).normal;
 
 		if (Vector2.Angle(normal, new Vector2(0f, 1f)) < 10f)
@@ -66,8 +65,6 @@ public class PlayerInput : MonoBehaviour
     }
 	
 	void OnCollisionExit2D(Collision2D col){
-		Debug.Log("EXIT");
-		//if (Vector2.Angle(normal, new Vector2(0f, 1f)) < 10f)
 		if(isGrounded)
 			isGrounded = false;
 	}
@@ -90,11 +87,12 @@ public class PlayerInput : MonoBehaviour
 			if (jump)
 			{
 				speed.y = jumpSpeed * Time.deltaTime;
-				//isGrounded = false;
 				jump = false;
 			}
-
-			if (!isGrounded && speed.y > maxFallSpeed) speed.y -= AccGrav * Time.fixedDeltaTime;
+			if (!isGrounded){
+				speed.y -= AccGrav * Time.fixedDeltaTime;
+				if (speed.y < maxFallSpeed) speed.y = maxFallSpeed;
+			}
 		}
 
 		else dashTime--;
