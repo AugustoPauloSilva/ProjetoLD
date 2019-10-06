@@ -14,16 +14,19 @@ public class PlayerInput : MonoBehaviour
 	public int maxDashTime = 5;
 	public int verticalSpeed = -200;
 	public float floatingSpeed = 40;
+	public int health;
+	public int maxHealth;
 
 	public bool isGrounded = false;
  	public bool secondJumpAcquired = false;
 	public bool dashAcquired = false;
-	bool jump = false;
+	private bool jump = false;
 	public int dashTime;
+	private int nCollisions = 0;
    	private bool dashRight = false;
     private bool dashLeft = false;
     private bool secondJumpAvailabe = true;
-    private Vector2 speed;
+    public Vector2 speed;
     private Vector2 pos;
 	
     Rigidbody2D body;
@@ -83,14 +86,15 @@ public class PlayerInput : MonoBehaviour
             isGrounded = true;
 			secondJumpAvailabe = true;
         }
-        else if (Vector2.Angle(normal, new Vector2(1f, 0f)) < 10f)
+        else if ((Vector2.Angle(normal, new Vector2(1f, 0f)) < 10f) && nCollisions == 1)
             isGrounded = false;
-        else if (Vector2.Angle(normal, new Vector2(-1f, 0f)) < 10f)
+        else if ((Vector2.Angle(normal, new Vector2(-1f, 0f)) < 10f) && nCollisions == 1)
             isGrounded = false;
     }
 	
 	 void OnCollisionEnter2D(Collision2D col)
     {
+		nCollisions++;
 		normal = col.GetContact(0).normal;
 		if (Vector2.Angle(normal, new Vector2(0f, 1f)) < 10f)
            speed.y = 0;
@@ -100,6 +104,7 @@ public class PlayerInput : MonoBehaviour
 	
 	void OnCollisionExit2D(Collision2D col){
         isGrounded = false;
+		nCollisions--;
 	}
 
     void FixedUpdate()
