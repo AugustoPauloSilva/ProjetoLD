@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 5569867409013652021}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Play
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -147,14 +147,14 @@ MonoBehaviour:
   usedSpeed: 700
   jumpSpeed: 800
   AccGrav: 35
+  maxFallSpeed: -700
+  dashSpeed: 2000
+  dashDelay: 0
+  maxDashTime: 5
+  verticalSpeed: -200
   isGrounded: 0
   secondJumpAcquired: 1
   dashAcquired: 1
-  dashDelay: 0
-  maxFallSpeed: -700
-  dashSpeed: 2000
-  maxDashTime: 5
-  verticalSpeed: -200
   dashTime: 0
 --- !u!114 &5569867409013652027
 MonoBehaviour:
@@ -204,7 +204,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5569867409044194610
 Transform:
   m_ObjectHideFlags: 0

@@ -7,12 +7,11 @@ public class FaceMouse : MonoBehaviour
     Vector3 mouseVector;
     Vector3 mousePos;
     Vector3 aux;
-    float strength = 5f;
     float armRotate;
     public GameObject arm;
     public static GameObject player;
     public static Transform armPosition;
-    public static RaycastHit2D hit;
+    // public static RaycastHit2D hit;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,11 +33,11 @@ public class FaceMouse : MonoBehaviour
         }
         armRotate = armRotate-arm.transform.rotation.z;
         arm.transform.rotation = Quaternion.Euler(new Vector3(0,0,armRotate));
-        FaceMouse.hit = Physics2D.Raycast(arm.transform.position,mousePos-arm.transform.position);
+        // FaceMouse.hit = Physics2D.Raycast(arm.transform.position,mousePos-arm.transform.position);
     }
     
-    void OnDrawGizmos()
-    {
-        Gizmos.DrawRay(arm.transform.position,mousePos-arm.transform.position);
-    }
+    // void OnDrawGizmos()
+    // {
+    //     Gizmos.DrawRay(arm.transform.position,mousePos-arm.transform.position);
+    // }
 }
