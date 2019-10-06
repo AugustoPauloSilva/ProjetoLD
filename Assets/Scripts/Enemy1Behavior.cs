@@ -28,10 +28,11 @@ public class Enemy1Behavior : MonoBehaviour
             turnCount = turnTimer;
         }
         if (turnCount > 0) turnCount--;
-        body.velocity = new Vector2(speed*Time.fixedDeltaTime,body.velocity.y);
+        body.velocity = new Vector2(speed*Time.fixedDeltaTime,0);
     }
 
     void OnCollisionEnter2D(Collision2D other) {
+        if(other.gameObject.tag == "Attack") return;
         if(other.gameObject.tag == "Play"){
             other.gameObject.GetComponent<PlayerInput>().TakeDamage();
             if (speed>0 && (Vector2.Angle(other.GetContact(0).normal,Vector2.right)<10f))

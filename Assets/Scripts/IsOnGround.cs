@@ -18,11 +18,15 @@ public class IsOnGround : MonoBehaviour
     }
 
     void OnTriggerExit2D(Collider2D other) {
-        if (other.tag != "Play" && other.tag != "Drag" && other.tag != "Destructible") 
+        // if (other.tag != "Play" && other.tag != "Drag" && other.tag != "Destructible" && 
+        //         other.tag != "Enemy" && other.tag != "Attack") 
+        if (other.tag == "EnemyMove")
             isGrounded = false;
     }
     void OnTriggerEnter2D(Collider2D other) {
-        if (other.tag != "Play" && other.tag != "Drag" && other.tag != "Destructible") 
+        // if (other.tag != "Play" && other.tag != "Drag" && other.tag != "Destructible" &&
+        //         other.tag != "Enemy" && other.tag != "Attack") 
+        if (other.tag == "EnemyMove")
             isGrounded = true;
     }
 }
