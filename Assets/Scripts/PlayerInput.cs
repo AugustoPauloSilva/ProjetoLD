@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerInput : MonoBehaviour
 {
     //Constantes
-    	public float usedSpeed = 300f;
+    public float usedSpeed = 300f;
     public float jumpSpeed = 1500f;
     public float AccGrav = 35f;
 	public float maxFallSpeed = -700f;
@@ -21,12 +21,12 @@ public class PlayerInput : MonoBehaviour
 	bool jump = false;
 	public int dashTime;
    	private bool dashRight = false;
-    	private bool dashLeft = false;
-    	private bool secondJumpAvailabe = true;
-    	private Vector2 speed;
-    	private Vector2 pos;
+    private bool dashLeft = false;
+    private bool secondJumpAvailabe = true;
+    private Vector2 speed;
+    private Vector2 pos;
 	
-    	Rigidbody2D body;
+    Rigidbody2D body;
 	FaceMouse mouse;
 	Vector2 normal;
 	Animator anim;
@@ -85,18 +85,14 @@ public class PlayerInput : MonoBehaviour
     {
 		normal = col.GetContact(0).normal;
 		if (col.gameObject.tag == ("Ground") && Vector2.Angle(normal, new Vector2(0f, 1f)) < 10f)
-        {
            speed.y = 0;
-        }
 		if (col.gameObject.tag == ("Ground") && Vector2.Angle(normal, new Vector2(0f, -1f)) < 10f)
             speed.y = 0;
     }
 	
 	void OnCollisionExit2D(Collision2D col){
 		if (col.gameObject.tag == ("Ground"))
-        {
             isGrounded = false;
-        }
 	}
 
     void FixedUpdate()
@@ -119,12 +115,12 @@ public class PlayerInput : MonoBehaviour
 				anim.SetBool("Walk", true);
 			} else anim.SetBool("Walk", false);
 
-			if (Input.GetKey(KeyCode.W))
+			if (Input.GetKey(KeyCode.W) && !isGrounded)
 			{
 				speed.y += floatingSpeed * Time.deltaTime;	
 			}
 			
-			if (Input.GetKey(KeyCode.S))
+			if (Input.GetKey(KeyCode.S) && !isGrounded)
 			{
 				speed.y -= floatingSpeed * Time.deltaTime;	
 			}
