@@ -6,13 +6,14 @@ public class PlayerInput : MonoBehaviour
 {
     //Constantes
     	public float usedSpeed = 300f;
-    public float jumpSpeed = 700f;
+    public float jumpSpeed = 1500f;
     public float AccGrav = 35f;
 	public float maxFallSpeed = -700f;
 	public float dashSpeed = 2000f;
    	public int dashDelay = 0;
 	public int maxDashTime = 5;
 	public int verticalSpeed = -200;
+	public float floatingSpeed = 20;
 
 	public bool isGrounded = false;
  	public bool secondJumpAcquired = false;
@@ -56,7 +57,8 @@ public class PlayerInput : MonoBehaviour
 
 		if (Input.GetKeyDown(KeyCode.Space) && dashDelay <= 0)
 		{
-			if (mouse.arm.transform.rotation.z*180 < 90f && mouse.arm.transform.rotation.z*180 >= -90f)
+			print(mouse.arm.transform.rotation.z);
+			if (mouse.arm.transform.rotation.z < 0.7f && mouse.arm.transform.rotation.z >= -0.7f)
 				dashRight = true;
 			else
 				dashLeft = true;
@@ -86,6 +88,8 @@ public class PlayerInput : MonoBehaviour
         {
            speed.y = 0;
         }
+		if (col.gameObject.tag == ("Ground") && Vector2.Angle(normal, new Vector2(0f, -1f)) < 10f)
+            speed.y = 0;
     }
 	
 	void OnCollisionExit2D(Collision2D col){
@@ -106,14 +110,24 @@ public class PlayerInput : MonoBehaviour
 				speed.x = usedSpeed * Time.deltaTime;
 				spriteRender.flipX = true;
 				anim.SetBool("Walk", true);
-				
 			}
+			
 			else if (Input.GetKey(KeyCode.A))
 			{
 				speed.x = -usedSpeed * Time.deltaTime;
 				spriteRender.flipX = false;
 				anim.SetBool("Walk", true);
 			} else anim.SetBool("Walk", false);
+
+			if (Input.GetKey(KeyCode.W))
+			{
+				speed.y += floatingSpeed * Time.deltaTime;	
+			}
+			
+			if (Input.GetKey(KeyCode.S))
+			{
+				speed.y -= floatingSpeed * Time.deltaTime;	
+			}
 
 			if (jump)
 			{
