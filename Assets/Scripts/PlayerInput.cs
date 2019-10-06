@@ -69,6 +69,10 @@ public class PlayerInput : MonoBehaviour
 		}
 		else anim.SetBool("Fall", false);
 		
+		if(isGrounded == false){
+		anim.SetBool("OnAir", true);
+		}
+		else anim.SetBool("OnAir", false);
     }
 
     void OnCollisionStay2D(Collision2D col)
