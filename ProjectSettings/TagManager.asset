@@ -8,6 +8,7 @@ TagManager:
   - Ground
   - Destructible
   - Drag
+  - Play
   layers:
   - Default
   - TransparentFX

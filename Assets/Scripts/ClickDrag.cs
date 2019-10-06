@@ -10,10 +10,14 @@ public class ClickDrag : MonoBehaviour
     bool isDragging = false;
     Rigidbody2D body;
     Vector3 mousePos;
-    Vector3 mouseVector;
+    RaycastHit2D hit2;
 
     public void clickReaction(){
-        isDragging = !isDragging;
+        if (hit2.collider.gameObject.tag == "Play") isDragging = !isDragging;
+    }
+
+    public void clickReaction2(){
+        isDragging = false;
     }
 
     // Start is called before the first frame update
@@ -23,22 +27,23 @@ public class ClickDrag : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
+        mousePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,
+            Input.mousePosition.y, -Camera.main.transform.position.z));
+        hit2 = FaceMouse.hit;
         if (isDragging){
-            mouseVector = new Vector3(Input.mousePosition.x, 
-                Input.mousePosition.y, -Camera.main.transform.position.z);
-            mousePos = Camera.main.ScreenToWorldPoint(mouseVector);
             Vector2 aux = mousePos-transform.position;
             if (aux.magnitude > bigDistance) usedSpeed = Mathf.Lerp(usedSpeed,maxSpeed,0.1f);
             else {
                 Vector2 aux2 = Vector2.Lerp(transform.position,mousePos,0.001f);
                 aux2 = mousePos;
                 body.MovePosition(aux2);
+                body.velocity = Vector2.zero;
                 return;
             }
             aux = aux.normalized;
-            body.velocity = aux*usedSpeed;
+            body.velocity = aux*usedSpeed*Time.fixedDeltaTime;
         }
     }
 }

@@ -4,24 +4,29 @@ using UnityEngine;
 
 public class MouseInput : MonoBehaviour
 {
+    bool isOver = false;
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if(gameObject.tag == "Drag" && Input.GetMouseButtonDown(1)){
+            if (!isOver) GetComponent<ClickDrag>().clickReaction2();
+            else isOver = false;
+        }
     }
 
-    void OnMouseDown() {
-        if (gameObject.tag == "Destructible"){
+    void OnMouseOver() {
+        if (gameObject.tag == "Destructible" && Input.GetMouseButtonDown(0)){
             GetComponent<ClickObstacle>().clickReaction();
         }
-        if (gameObject.tag == "Drag"){
+        else if (gameObject.tag == "Drag" && Input.GetMouseButtonDown(1)){
             GetComponent<ClickDrag>().clickReaction();
+            isOver = true;
         }
     }
 }

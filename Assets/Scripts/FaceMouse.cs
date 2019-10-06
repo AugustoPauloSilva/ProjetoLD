@@ -10,10 +10,14 @@ public class FaceMouse : MonoBehaviour
     float strength = 5f;
     float armRotate;
     public GameObject arm;
+    public static GameObject player;
+    public static Transform armPosition;
+    public static RaycastHit2D hit;
     // Start is called before the first frame update
     void Start()
     {
-
+        player = gameObject;
+        armPosition = arm.transform;
     }
 
     // Update is called once per frame
@@ -30,5 +34,11 @@ public class FaceMouse : MonoBehaviour
         }
         armRotate = armRotate-arm.transform.rotation.z;
         arm.transform.rotation = Quaternion.Euler(new Vector3(0,0,armRotate));
+        FaceMouse.hit = Physics2D.Raycast(arm.transform.position,mousePos-arm.transform.position);
+    }
+    
+    void OnDrawGizmos()
+    {
+        Gizmos.DrawRay(arm.transform.position,mousePos-arm.transform.position);
     }
 }
