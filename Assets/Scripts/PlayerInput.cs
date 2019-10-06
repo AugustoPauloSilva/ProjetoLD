@@ -1,35 +1,32 @@
-﻿//Coisas p fazer
-//Adaptar as animacoes
-//Barrinha para dash, se ele esta disponivel
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
 {
-    public float usedSpeed = 300f;
-    public float jumpSpeed = 700f;
-    public float AccGrav = 35f;
-    public bool isGrounded = false;
-    public bool secondJumpAcquired = false;
-    public bool dashAcquired = false;
-    public int dashDelay = 0;
+    //Constantes
+    	public float usedSpeed = 300f;
+    	public float jumpSpeed = 700f;
+    	public float AccGrav = 35f;
 	public float maxFallSpeed = -700f;
 	public float dashSpeed = 2000f;
+   	public int dashDelay = 0;
 	public int maxDashTime = 5;
-	public float verticalSpeed = -200;
-	
-    FaceMouse mouse;
-	Vector2 normal;
 
+	public bool isGrounded = false;
+ 	public bool secondJumpAcquired = false;
+	public bool dashAcquired = false;
 	bool jump = false;
-    public int dashTime;
-    private bool dashRight = false;
-    private bool dashLeft = false;
-    private bool secondJumpAvailabe = true;
-    private Vector2 speed;
-    private Vector2 pos;
-    Rigidbody2D body;
+	public int dashTime;
+   	private bool dashRight = false;
+    	private bool dashLeft = false;
+    	private bool secondJumpAvailabe = true;
+    	private Vector2 speed;
+    	private Vector2 pos;
+	
+    	Rigidbody2D body;
+	FaceMouse mouse;
+	Vector2 normal;
 	Animator anim;
 	SpriteRenderer spriteRender;
 
