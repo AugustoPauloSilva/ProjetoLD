@@ -182,4 +182,8 @@ public class PlayerInput : MonoBehaviour
 		if (dashDelay > 0) dashDelay--;
 		body.velocity = speed;
 	}
+
+	public void TakeDamage (){
+		Debug.Log("Doeu!");
+	}
 }
