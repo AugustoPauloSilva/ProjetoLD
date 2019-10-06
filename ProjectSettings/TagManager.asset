@@ -6,12 +6,6 @@ TagManager:
   tags:
   - Obstacle
   - Ground
-  - Destructible
-  - Drag
-  - Play
-  - Attack
-  - Enemy
-  - EnemyMove
   layers:
   - Default
   - TransparentFX
