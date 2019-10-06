@@ -6,12 +6,13 @@ public class PlayerInput : MonoBehaviour
 {
     //Constantes
     	public float usedSpeed = 300f;
-    	public float jumpSpeed = 700f;
-    	public float AccGrav = 35f;
+    public float jumpSpeed = 700f;
+    public float AccGrav = 35f;
 	public float maxFallSpeed = -700f;
 	public float dashSpeed = 2000f;
    	public int dashDelay = 0;
 	public int maxDashTime = 5;
+	public int verticalSpeed = -200;
 
 	public bool isGrounded = false;
  	public bool secondJumpAcquired = false;
