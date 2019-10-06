@@ -216,7 +216,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundRight: {fileID: 1478730967546252398}
   groundLeft: {fileID: 1478730965698091372}
-  speed: 5
+  speed: 50
 --- !u!1 &1478730967546252387
 GameObject:
   m_ObjectHideFlags: 0
