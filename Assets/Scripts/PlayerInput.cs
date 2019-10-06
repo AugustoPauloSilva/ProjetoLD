@@ -17,6 +17,7 @@ public class PlayerInput : MonoBehaviour
 	public float maxFallSpeed = -700f;
 	public float dashSpeed = 2000f;
 	public int maxDashTime = 5;
+	public float verticalSpeed = -200;
 	
     FaceMouse mouse;
 	Vector2 normal;
@@ -29,6 +30,8 @@ public class PlayerInput : MonoBehaviour
     private Vector2 speed;
     private Vector2 pos;
     Rigidbody2D body;
+	Animator anim;
+	SpriteRenderer spriteRender;
 
     void Start()
     {
@@ -36,12 +39,18 @@ public class PlayerInput : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         speed = Vector2.zero;
         mouse = GetComponent<FaceMouse>();
+		anim = GetComponent<Animator>();
+		spriteRender = GetComponent<SpriteRenderer>();
     }
 
     void Update()
     {
-		if (Input.GetKeyDown(KeyCode.W) && isGrounded) jump = true;
-		else if (Input.GetKeyDown(KeyCode.W) && !isGrounded && secondJumpAcquired && secondJumpAvailabe)
+		if (Input.GetKeyDown(KeyCode.W) && isGrounded) {
+			jump = true;
+			anim.SetBool("Jump", true);
+		}
+		else anim.SetBool("Jump", false);		
+		if (Input.GetKeyDown(KeyCode.W) && !isGrounded && secondJumpAcquired && secondJumpAvailabe)
 		{
 			jump = true;
 			secondJumpAvailabe = false;
@@ -54,6 +63,12 @@ public class PlayerInput : MonoBehaviour
 			else
 				dashLeft = true;
 		}
+		
+		if(isGrounded == false && speed.y < verticalSpeed){
+				anim.SetBool("Fall", true);
+		}
+		else anim.SetBool("Fall", false);
+		
     }
 
     void OnCollisionEnter2D(Collision2D col)
@@ -82,10 +97,12 @@ public class PlayerInput : MonoBehaviour
 			if (Input.GetKey(KeyCode.D))
 			{
 				speed.x = usedSpeed * Time.deltaTime;
+				spriteRender.flipX = true;
 			}
 			else if (Input.GetKey(KeyCode.A))
 			{
 				speed.x = -usedSpeed * Time.deltaTime;
+				spriteRender.flipX = false;
 			}
 
 			if (jump)
