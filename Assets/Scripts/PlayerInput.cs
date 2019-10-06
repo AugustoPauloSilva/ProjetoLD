@@ -11,19 +11,18 @@ public class PlayerInput : MonoBehaviour
 	public float maxFallSpeed = -700f;
 	public float dashSpeed = 2000f;
    	public int dashDelay = 0;
-	public int maxDashTime = 5;
+	public float maxDashTime = 5;
 	public int verticalSpeed = -200;
 	public float floatingSpeed = 40;
-	public int health;
+	public int health;		
 	public int maxHealth = 3;
 	public bool isGrounded = false;
  	public bool secondJumpAcquired = false;
 	public bool dashAcquired = false;
-	public int dashTime;
+	public float dashTime;
 	public float fallDistance = -300f;
-	public int fallDamage = 1;
-	
-	private bool jump = false;
+	public int fallDamage = 1;					
+	private bool jump = false;		
 	private int nCollisions = 0;
    	private bool dashRight = false;
     private bool dashLeft = false;
@@ -53,8 +52,7 @@ public class PlayerInput : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.W) && isGrounded) {
 			jump = true;
 			anim.SetBool("Jump", true);
-		}
-		else anim.SetBool("Jump", false);		
+		}	
 		if (Input.GetKeyDown(KeyCode.W) && !isGrounded && secondJumpAcquired && secondJumpAvailabe)
 		{
 			jump = true;
@@ -63,21 +61,41 @@ public class PlayerInput : MonoBehaviour
 
 		if (Input.GetKeyDown(KeyCode.Space) && dashDelay <= 0)
 		{
-			if (mouse.arm.transform.rotation.z < 0.7f && mouse.arm.transform.rotation.z >= -0.7f)
+			if (mouse.arm.transform.rotation.z < 0.7f && mouse.arm.transform.rotation.z >= -0.7f){
 				dashRight = true;
-			else
+				dashTime = maxDashTime;
+				spriteRender.flipX = true;
+			}
+			else {
 				dashLeft = true;
+				dashTime = maxDashTime;
+				spriteRender.flipX = false;
+			}
 		}
 		
+		if (speed.x < 0 && mouse.arm.transform.rotation.z < 0.7f && mouse.arm.transform.rotation.z >= -0.7f) {
+			anim.SetBool("Moonwalking", true);
+		}
+		else if (speed.x > 0 && mouse.arm.transform.rotation.z >= 0.7f){
+			anim.SetBool("Moonwalking", true);
+		}
+		else anim.SetBool("Moonwalking", false);
+		
+
 		if(isGrounded == false && speed.y < verticalSpeed){
 				anim.SetBool("Fall", true);
+				anim.SetBool("Jump", false);	
 		}
-		else anim.SetBool("Fall", false);
+		else {
+			anim.SetBool("Fall", false);
+			anim.SetBool("Jump", true);
+		}
 		
 		if(isGrounded == false){
 		anim.SetBool("OnAir", true);
 		}
 		else anim.SetBool("OnAir", false);
+		
     }
 
     void OnCollisionStay2D(Collision2D col)
@@ -86,11 +104,12 @@ public class PlayerInput : MonoBehaviour
 		if (Vector2.Angle(normal, new Vector2(0f, 1f)) < 10f)
         {
             isGrounded = true;
+			anim.SetBool("OnGround", true);
 			secondJumpAvailabe = true;
 			dashAvailable = true;
         }
-        else if ((Vector2.Angle(normal, new Vector2(1f, 0f)) < 10f) && nCollisions == 1)
-            isGrounded = false;
+        else if ((Vector2.Angle(normal, new Vector2(1f, 0f)) < 10f) && nCollisions == 1)	
+			isGrounded = false;
         else if ((Vector2.Angle(normal, new Vector2(-1f, 0f)) < 10f) && nCollisions == 1)
             isGrounded = false;
     }
@@ -101,7 +120,7 @@ public class PlayerInput : MonoBehaviour
 		normal = col.GetContact(0).normal;
 		if (Vector2.Angle(normal, new Vector2(0f, 1f)) < 10f){
            speed.y = 0;
-		   lastPosition = transform.position;
+		   lastPosition = transform.position;		
 		}
 		if (Vector2.Angle(normal, new Vector2(0f, -1f)) < 10f)
             speed.y = 0;
@@ -110,6 +129,7 @@ public class PlayerInput : MonoBehaviour
 	void OnCollisionExit2D(Collision2D col){
         isGrounded = false;
 		nCollisions--;
+		anim.SetBool("OnGround", false);
 	}
 
     void FixedUpdate()
@@ -125,12 +145,16 @@ public class PlayerInput : MonoBehaviour
 				anim.SetBool("Walk", true);
 			}
 			
-			else if (Input.GetKey(KeyCode.A))
+			if (Input.GetKey(KeyCode.A))
 			{
 				speed.x = -usedSpeed * Time.deltaTime;
 				spriteRender.flipX = false;
 				anim.SetBool("Walk", true);
-			} else anim.SetBool("Walk", false);
+			}
+			
+			if (!(Input.GetKey(KeyCode.D))&& !(Input.GetKey(KeyCode.A))){
+				anim.SetBool("Walk", false);
+			}
 
 			if (Input.GetKey(KeyCode.W) && !isGrounded)
 			{
@@ -149,41 +173,44 @@ public class PlayerInput : MonoBehaviour
 				if (speed.y < maxFallSpeed) speed.y = maxFallSpeed;
 			}
 				
+				
+			anim.SetBool("Dash", false);
 		}
 		else {
-			dashTime--;
+			dashTime-= Time.deltaTime;
 			speed.y = 0;
 		}
 
 		if (dashRight && dashAvailable)
 		{
+			anim.SetBool("Dash", true);
 			speed.x = dashSpeed * Time.deltaTime;
-			dashRight = false;
-			dashTime = maxDashTime;
+			dashRight = false;	
 			dashDelay = 30;
 			dashAvailable = false;
 		}
 
 		if (dashLeft && dashAvailable)
 		{
+			anim.SetBool("Dash", true);
 			speed.x = -dashSpeed * Time.deltaTime;
 			dashLeft = false;
-			dashTime = maxDashTime;
 			dashDelay = 30;
 			dashAvailable = false;
 		}
-
-		if(transform.position.y <= fallDistance){	//Rotina de cair do mundo
-			transform.position = lastPosition;	//A posicao eh da primeira interacao com o ultimo objeto que o player ficou em pe
-			speed = Vector2.zero;
-			health -= fallDamage;	//Perde fallDamage de vida
-		}
 		
+		if(transform.position.y <= fallDistance){	//Rotina de cair do mundo		
+			transform.position = lastPosition;	//A posicao eh da primeira interacao com o ultimo objeto que o player ficou em pe		
+			speed = Vector2.zero;		
+			health -= fallDamage;	//Perde fallDamage de vida		
+		}
+			
 		if (dashDelay > 0) dashDelay--;
 		body.velocity = speed;
 	}
-
-	public void TakeDamage (){
-		Debug.Log("Doeu!");
+	
+	public void TakeDamage (){		
+		Debug.Log("Doeu!");		
 	}
+	
 }
