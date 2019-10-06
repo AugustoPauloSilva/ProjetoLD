@@ -15,19 +15,22 @@ public class PlayerInput : MonoBehaviour
 	public int verticalSpeed = -200;
 	public float floatingSpeed = 40;
 	public int health;
-	public int maxHealth;
-
+	public int maxHealth = 3;
 	public bool isGrounded = false;
  	public bool secondJumpAcquired = false;
 	public bool dashAcquired = false;
-	private bool jump = false;
 	public int dashTime;
+	public float fallDistance = -300f;
+	public int fallDamage = 1;
+	
+	private bool jump = false;
 	private int nCollisions = 0;
    	private bool dashRight = false;
     private bool dashLeft = false;
     private bool secondJumpAvailabe = true;
-    public Vector2 speed;
-    private Vector2 pos;
+    private Vector2 speed;
+	private bool dashAvailable = false;
+	private Vector3 lastPosition;
 	
     Rigidbody2D body;
 	FaceMouse mouse;
@@ -37,12 +40,12 @@ public class PlayerInput : MonoBehaviour
 
     void Start()
     {
-        pos = transform.position;
         body = GetComponent<Rigidbody2D>();
         speed = Vector2.zero;
         mouse = GetComponent<FaceMouse>();
 		anim = GetComponent<Animator>();
 		spriteRender = GetComponent<SpriteRenderer>();
+		lastPosition = Vector3.zero;
     }
 
     void Update()
@@ -60,7 +63,6 @@ public class PlayerInput : MonoBehaviour
 
 		if (Input.GetKeyDown(KeyCode.Space) && dashDelay <= 0)
 		{
-			print(mouse.arm.transform.rotation.z);
 			if (mouse.arm.transform.rotation.z < 0.7f && mouse.arm.transform.rotation.z >= -0.7f)
 				dashRight = true;
 			else
@@ -85,6 +87,7 @@ public class PlayerInput : MonoBehaviour
         {
             isGrounded = true;
 			secondJumpAvailabe = true;
+			dashAvailable = true;
         }
         else if ((Vector2.Angle(normal, new Vector2(1f, 0f)) < 10f) && nCollisions == 1)
             isGrounded = false;
@@ -96,8 +99,10 @@ public class PlayerInput : MonoBehaviour
     {
 		nCollisions++;
 		normal = col.GetContact(0).normal;
-		if (Vector2.Angle(normal, new Vector2(0f, 1f)) < 10f)
+		if (Vector2.Angle(normal, new Vector2(0f, 1f)) < 10f){
            speed.y = 0;
+		   lastPosition = transform.position;
+		}
 		if (Vector2.Angle(normal, new Vector2(0f, -1f)) < 10f)
             speed.y = 0;
     }
@@ -120,7 +125,7 @@ public class PlayerInput : MonoBehaviour
 				anim.SetBool("Walk", true);
 			}
 			
-			if (Input.GetKey(KeyCode.A))
+			else if (Input.GetKey(KeyCode.A))
 			{
 				speed.x = -usedSpeed * Time.deltaTime;
 				spriteRender.flipX = false;
@@ -132,11 +137,7 @@ public class PlayerInput : MonoBehaviour
 				speed.y += floatingSpeed * Time.deltaTime;	
 			}
 			
-			if (Input.GetKey(KeyCode.S) && !isGrounded)
-			{
-                if (speed.y > 0) speed.y = 0;
-                //speed.y -= floatingSpeed * Time.deltaTime;
-			}
+			if (Input.GetKey(KeyCode.S) && !isGrounded && speed.y > 0) speed.y = 0;
 
 			if (jump)
 			{
@@ -154,22 +155,30 @@ public class PlayerInput : MonoBehaviour
 			speed.y = 0;
 		}
 
-		if (dashRight)
+		if (dashRight && dashAvailable)
 		{
 			speed.x = dashSpeed * Time.deltaTime;
 			dashRight = false;
 			dashTime = maxDashTime;
 			dashDelay = 30;
+			dashAvailable = false;
 		}
 
-		if (dashLeft)
+		if (dashLeft && dashAvailable)
 		{
 			speed.x = -dashSpeed * Time.deltaTime;
 			dashLeft = false;
 			dashTime = maxDashTime;
 			dashDelay = 30;
+			dashAvailable = false;
 		}
 
+		if(transform.position.y <= fallDistance){	//Rotina de cair do mundo
+			transform.position = lastPosition;	//A posicao eh da primeira interacao com o ultimo objeto que o player ficou em pe
+			speed = Vector2.zero;
+			health -= fallDamage;	//Perde fallDamage de vida
+		}
+		
 		if (dashDelay > 0) dashDelay--;
 		body.velocity = speed;
 	}
