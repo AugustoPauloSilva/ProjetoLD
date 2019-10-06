@@ -1,4 +1,4 @@
-//Coisas p fazer
+﻿//Coisas p fazer
 //Adaptar as animacoes
 //Barrinha para dash, se ele esta disponivel
 using System.Collections;
@@ -71,13 +71,22 @@ public class PlayerInput : MonoBehaviour
 		
     }
 
-    void OnCollisionEnter2D(Collision2D col)
+    void OnCollisionStay2D(Collision2D col)
     {
 		normal = col.GetContact(0).normal;
 		if (col.gameObject.tag == ("Ground") && Vector2.Angle(normal, new Vector2(0f, 1f)) < 10f)
         {
             isGrounded = true;
 			secondJumpAvailabe = true;
+        }
+    }
+	
+	 void OnCollisionEnter2D(Collision2D col)
+    {
+		normal = col.GetContact(0).normal;
+		if (col.gameObject.tag == ("Ground") && Vector2.Angle(normal, new Vector2(0f, 1f)) < 10f)
+        {
+           speed.y = 0;
         }
     }
 	
@@ -98,12 +107,15 @@ public class PlayerInput : MonoBehaviour
 			{
 				speed.x = usedSpeed * Time.deltaTime;
 				spriteRender.flipX = true;
+				anim.SetBool("Walk", true);
+				
 			}
 			else if (Input.GetKey(KeyCode.A))
 			{
 				speed.x = -usedSpeed * Time.deltaTime;
 				spriteRender.flipX = false;
-			}
+				anim.SetBool("Walk", true);
+			} else anim.SetBool("Walk", false);
 
 			if (jump)
 			{
@@ -111,9 +123,10 @@ public class PlayerInput : MonoBehaviour
 				jump = false;
 			}
 			if (!isGrounded){
-				speed.y -= AccGrav * Time.fixedDeltaTime;
+				speed.y -= AccGrav * Time.deltaTime;
 				if (speed.y < maxFallSpeed) speed.y = maxFallSpeed;
 			}
+				
 		}
 		else {
 			dashTime--;
