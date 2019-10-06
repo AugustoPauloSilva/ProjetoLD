@@ -13,12 +13,21 @@ public class MouseInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if(gameObject.tag == "Drag" && Input.GetMouseButtonDown(0) && 
+                FaceMouse.player.GetComponent<PlayerInput>().usingTelekinesis){
+            if (!isOver) GetComponent<ClickDrag>().clickReaction2();
+            else isOver = false;
+        }
     }
 
-    void OnMouseDown() {
-        if (gameObject.tag == "Obstacle"){
+    void OnMouseOver() {
+        if (gameObject.tag == "Destructible" && Input.GetMouseButtonDown(1)){
             GetComponent<ClickObstacle>().clickReaction();
+        }
+        else if (gameObject.tag == "Drag" && Input.GetMouseButtonDown(0) && 
+                FaceMouse.player.GetComponent<PlayerInput>().usingTelekinesis){
+            GetComponent<ClickDrag>().clickReaction();
+            isOver = true;
         }
     }
 }

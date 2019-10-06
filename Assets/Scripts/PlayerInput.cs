@@ -21,7 +21,8 @@ public class PlayerInput : MonoBehaviour
 	public bool dashAcquired = false;
 	public float dashTime;
 	public float fallDistance = -300f;
-	public int fallDamage = 1;					
+	public int fallDamage = 1;
+	public bool usingTelekinesis = false;					
 	private bool jump = false;		
 	private int nCollisions = 0;
    	private bool dashRight = false;
@@ -57,6 +58,9 @@ public class PlayerInput : MonoBehaviour
 		{
 			jump = true;
 			secondJumpAvailabe = false;
+		}
+		if (Input.GetKeyDown(KeyCode.Keypad1)){
+			usingTelekinesis = !usingTelekinesis;
 		}
 
 		if (Input.GetKeyDown(KeyCode.Space) && dashDelay <= 0 && dashAvailable)
