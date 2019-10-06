@@ -28,7 +28,7 @@ public class PlayerInput : MonoBehaviour
     private bool dashLeft = false;
     private bool secondJumpAvailabe = true;
     private Vector2 speed;
-	private bool dashAvailable = false;
+	public bool dashAvailable = false;
 	private Vector3 lastPosition;
 	
     Rigidbody2D body;
@@ -59,7 +59,7 @@ public class PlayerInput : MonoBehaviour
 			secondJumpAvailabe = false;
 		}
 
-		if (Input.GetKeyDown(KeyCode.Space) && dashDelay <= 0)
+		if (Input.GetKeyDown(KeyCode.Space) && dashDelay <= 0 && dashAvailable)
 		{
 			if (mouse.arm.transform.rotation.z < 0.7f && mouse.arm.transform.rotation.z >= -0.7f){
 				dashRight = true;
@@ -71,6 +71,8 @@ public class PlayerInput : MonoBehaviour
 				dashTime = maxDashTime;
 				spriteRender.flipX = false;
 			}
+			
+			dashAvailable = false;
 		}
 		
 		if (speed.x < 0 && mouse.arm.transform.rotation.z < 0.7f && mouse.arm.transform.rotation.z >= -0.7f) {
@@ -134,7 +136,7 @@ public class PlayerInput : MonoBehaviour
 
     void FixedUpdate()
     {
-		if (dashTime <= 0)
+		if (dashTime <= 0f)
 		{
 			speed.x = 0f;
 
@@ -181,22 +183,20 @@ public class PlayerInput : MonoBehaviour
 			speed.y = 0;
 		}
 
-		if (dashRight && dashAvailable)
+		if (dashRight)
 		{
 			anim.SetBool("Dash", true);
 			speed.x = dashSpeed * Time.deltaTime;
 			dashRight = false;	
-			dashDelay = 30;
-			dashAvailable = false;
+			dashDelay = 30;	
 		}
 
-		if (dashLeft && dashAvailable)
+		if (dashLeft)
 		{
 			anim.SetBool("Dash", true);
 			speed.x = -dashSpeed * Time.deltaTime;
 			dashLeft = false;
 			dashDelay = 30;
-			dashAvailable = false;
 		}
 		
 		if(transform.position.y <= fallDistance){	//Rotina de cair do mundo		
