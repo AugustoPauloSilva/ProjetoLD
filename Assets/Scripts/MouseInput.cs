@@ -20,5 +20,8 @@ public class MouseInput : MonoBehaviour
         if (gameObject.tag == "Destructible"){
             GetComponent<ClickObstacle>().clickReaction();
         }
+        if (gameObject.tag == "Drag"){
+            GetComponent<ClickDrag>().clickReaction();
+        }
     }
 }
