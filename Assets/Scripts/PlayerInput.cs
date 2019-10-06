@@ -1,35 +1,33 @@
-//Coisas p fazer
-//Adaptar as animacoes
-//Barrinha para dash, se ele esta disponivel
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
 {
-    public float usedSpeed = 300f;
+    //Constantes
+    	public float usedSpeed = 300f;
     public float jumpSpeed = 700f;
     public float AccGrav = 35f;
-    public bool isGrounded = false;
-    public bool secondJumpAcquired = false;
-    public bool dashAcquired = false;
-    public int dashDelay = 0;
 	public float maxFallSpeed = -700f;
 	public float dashSpeed = 2000f;
+   	public int dashDelay = 0;
 	public int maxDashTime = 5;
-	public float verticalSpeed = -200;
-	
-    FaceMouse mouse;
-	Vector2 normal;
+	public int verticalSpeed = -200;
 
+	public bool isGrounded = false;
+ 	public bool secondJumpAcquired = false;
+	public bool dashAcquired = false;
 	bool jump = false;
-    public int dashTime;
-    private bool dashRight = false;
-    private bool dashLeft = false;
-    private bool secondJumpAvailabe = true;
-    private Vector2 speed;
-    private Vector2 pos;
-    Rigidbody2D body;
+	public int dashTime;
+   	private bool dashRight = false;
+    	private bool dashLeft = false;
+    	private bool secondJumpAvailabe = true;
+    	private Vector2 speed;
+    	private Vector2 pos;
+	
+    	Rigidbody2D body;
+	FaceMouse mouse;
+	Vector2 normal;
 	Animator anim;
 	SpriteRenderer spriteRender;
 
@@ -71,13 +69,22 @@ public class PlayerInput : MonoBehaviour
 		
     }
 
-    void OnCollisionEnter2D(Collision2D col)
+    void OnCollisionStay2D(Collision2D col)
     {
 		normal = col.GetContact(0).normal;
 		if (col.gameObject.tag == ("Ground") && Vector2.Angle(normal, new Vector2(0f, 1f)) < 10f)
         {
             isGrounded = true;
 			secondJumpAvailabe = true;
+        }
+    }
+	
+	 void OnCollisionEnter2D(Collision2D col)
+    {
+		normal = col.GetContact(0).normal;
+		if (col.gameObject.tag == ("Ground") && Vector2.Angle(normal, new Vector2(0f, 1f)) < 10f)
+        {
+           speed.y = 0;
         }
     }
 	
@@ -98,12 +105,15 @@ public class PlayerInput : MonoBehaviour
 			{
 				speed.x = usedSpeed * Time.deltaTime;
 				spriteRender.flipX = true;
+				anim.SetBool("Walk", true);
+				
 			}
 			else if (Input.GetKey(KeyCode.A))
 			{
 				speed.x = -usedSpeed * Time.deltaTime;
 				spriteRender.flipX = false;
-			}
+				anim.SetBool("Walk", true);
+			} else anim.SetBool("Walk", false);
 
 			if (jump)
 			{
@@ -111,9 +121,10 @@ public class PlayerInput : MonoBehaviour
 				jump = false;
 			}
 			if (!isGrounded){
-				speed.y -= AccGrav * Time.fixedDeltaTime;
+				speed.y -= AccGrav * Time.deltaTime;
 				if (speed.y < maxFallSpeed) speed.y = maxFallSpeed;
 			}
+				
 		}
 		else {
 			dashTime--;
