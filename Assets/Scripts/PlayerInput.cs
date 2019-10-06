@@ -6,14 +6,14 @@ public class PlayerInput : MonoBehaviour
 {
     //Constantes
     public float usedSpeed = 300f;
-    public float jumpSpeed = 1500f;
+    public float jumpSpeed = 1300f;
     public float AccGrav = 35f;
 	public float maxFallSpeed = -700f;
 	public float dashSpeed = 2000f;
    	public int dashDelay = 0;
 	public int maxDashTime = 5;
 	public int verticalSpeed = -200;
-	public float floatingSpeed = 20;
+	public float floatingSpeed = 40;
 
 	public bool isGrounded = false;
  	public bool secondJumpAcquired = false;
@@ -47,8 +47,7 @@ public class PlayerInput : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.W) && isGrounded) {
 			jump = true;
 			anim.SetBool("Jump", true);
-		}
-		else anim.SetBool("Jump", false);		
+		}	
 		if (Input.GetKeyDown(KeyCode.W) && !isGrounded && secondJumpAcquired && secondJumpAvailabe)
 		{
 			jump = true;
@@ -64,10 +63,23 @@ public class PlayerInput : MonoBehaviour
 				dashLeft = true;
 		}
 		
+		if (Input.GetKey(KeyCode.A) && mouse.arm.transform.rotation.z < 0.7f && mouse.arm.transform.rotation.z >= -0.7f) {
+			anim.SetBool("Moonwalking", true);
+		}
+		else if (Input.GetKey(KeyCode.D) && mouse.arm.transform.rotation.z >= 0.7f){
+			print(mouse.arm.transform.rotation.z);
+			anim.SetBool("Moonwalking", true);
+		}
+		else anim.SetBool("Moonwalking", false);
+		
 		if(isGrounded == false && speed.y < verticalSpeed){
 				anim.SetBool("Fall", true);
+				anim.SetBool("Jump", false);	
 		}
-		else anim.SetBool("Fall", false);
+		else {
+			anim.SetBool("Fall", false);
+			anim.SetBool("Jump", true);
+		}
 		
 		if(isGrounded == false){
 		anim.SetBool("OnAir", true);
@@ -78,25 +90,30 @@ public class PlayerInput : MonoBehaviour
     void OnCollisionStay2D(Collision2D col)
     {
 		normal = col.GetContact(0).normal;
-		if (col.gameObject.tag == ("Ground") && Vector2.Angle(normal, new Vector2(0f, 1f)) < 10f)
+		if (Vector2.Angle(normal, new Vector2(0f, 1f)) < 10f)
         {
             isGrounded = true;
+			anim.SetBool("OnGround", true);
 			secondJumpAvailabe = true;
         }
+        else if (Vector2.Angle(normal, new Vector2(1f, 0f)) < 10f)
+            isGrounded = false;
+        else if (Vector2.Angle(normal, new Vector2(-1f, 0f)) < 10f)
+            isGrounded = false;
     }
 	
 	 void OnCollisionEnter2D(Collision2D col)
     {
 		normal = col.GetContact(0).normal;
-		if (col.gameObject.tag == ("Ground") && Vector2.Angle(normal, new Vector2(0f, 1f)) < 10f)
+		if (Vector2.Angle(normal, new Vector2(0f, 1f)) < 10f)
            speed.y = 0;
-		if (col.gameObject.tag == ("Ground") && Vector2.Angle(normal, new Vector2(0f, -1f)) < 10f)
+		if (Vector2.Angle(normal, new Vector2(0f, -1f)) < 10f)
             speed.y = 0;
     }
 	
 	void OnCollisionExit2D(Collision2D col){
-		if (col.gameObject.tag == ("Ground"))
-            isGrounded = false;
+        isGrounded = false;
+		anim.SetBool("OnGround", false);
 	}
 
     void FixedUpdate()
@@ -126,7 +143,8 @@ public class PlayerInput : MonoBehaviour
 			
 			if (Input.GetKey(KeyCode.S) && !isGrounded)
 			{
-				speed.y -= floatingSpeed * Time.deltaTime;	
+                if (speed.y > 0) speed.y = 0;
+                //speed.y -= floatingSpeed * Time.deltaTime;
 			}
 
 			if (jump)
