@@ -96,7 +96,7 @@ public class BossBehavior : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other) {
         if (other.tag == "Play"){
-            other.GetComponent<PlayerInput>().TakeDamage();
+            other.GetComponent<PlayerInput>().TakeDamage(1, false, 0);
         }
     }
 
@@ -108,7 +108,7 @@ public class BossBehavior : MonoBehaviour
             usedAngle = initAngle;
             arm.transform.rotation = Quaternion.Euler(0,0,usedAngle);
             body.velocity = Vector2.zero;
-            other.gameObject.GetComponent<PlayerInput>().TakeDamage();
+            other.gameObject.GetComponent<PlayerInput>().TakeDamage(1, false, 0f);
         }
     }
 }
