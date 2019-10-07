@@ -144,18 +144,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82fad08f7c080ec4c90c5e3284a78119, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usedSpeed: 700
-  jumpSpeed: 800
-  AccGrav: 35
-  maxFallSpeed: -700
-  dashSpeed: 2000
+  usedSpeed: 1000
+  jumpSpeed: 1500
+  AccGrav: 80
+  maxFallSpeed: -100
+  dashSpeed: 5000
   dashDelay: 0
-  maxDashTime: 5
+  maxDashTime: 0.15
   verticalSpeed: -200
+  floatingSpeed: 40
+  health: 0
+  maxHealth: 10
   isGrounded: 0
   secondJumpAcquired: 1
   dashAcquired: 1
   dashTime: 0
+  fallDistance: -300
+  fallDamage: 1
+  usingTelekinesis: 0
+  dashAvailable: 0
 --- !u!114 &5569867409013652027
 MonoBehaviour:
   m_ObjectHideFlags: 0
