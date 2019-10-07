@@ -51,6 +51,7 @@ public class BossBehavior : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         walked = walkDistance;
         rangedOffset = Vector3.zero;
+        health = maxhealth;
         rangedOffset.x = -7f;
 
         walkPeriod += bossDiffScale*2;
@@ -89,6 +90,8 @@ public class BossBehavior : MonoBehaviour
 
     void FixedUpdate() {
         distance = playerScript.transform.position.x-transform.position.x;
+        if (timeOtherDamage>0) timeOtherDamage = timeOtherDamage*Time.fixedDeltaTime;
+        else timeOtherDamage = 0;
 
         if (isStunned){
             stunCount++;
@@ -231,6 +234,7 @@ public class BossBehavior : MonoBehaviour
         aux.GetComponent<Rigidbody2D>().velocity = new Vector2(direction*0.6f*bombYSpeed,1.2f*bombYSpeed);
         if (attackCycle >= 5){
             aux2.x += 2*direction;
+            aux2.y -= 5f;
             aux2.z = -1;
             aux = Instantiate(bombOrigin,aux2,transform.rotation);
             aux.GetComponent<Rigidbody2D>().velocity = new Vector2(direction*0.5f*bombYSpeed,bombYSpeed);
@@ -249,6 +253,8 @@ public class BossBehavior : MonoBehaviour
             walkDistance += bossDiffScale*2;
             walkSpeed += bossDiffScale*4;
             rangedSpeed += bossDiffScale*2;
+            attackCycle++;
+            if (health <= 0) Destroy(gameObject);
 		}
 	}
 
@@ -265,12 +271,12 @@ public class BossBehavior : MonoBehaviour
         meleeAttack = false;
         rangedAttack = false;
         bombAttack = false;
-        if (attackCycle < 5){
-            walkPeriod -= bossDiffScale;
-            walkDistance += bossDiffScale*2;
-            walkSpeed += bossDiffScale*4;
-            rangedSpeed += bossDiffScale*2;
-            attackCycle++;
-        }
+        // if (attackCycle < 5){
+        //     walkPeriod -= bossDiffScale;
+        //     walkDistance += bossDiffScale*2;
+        //     walkSpeed += bossDiffScale*4;
+        //     rangedSpeed += bossDiffScale*2;
+        //     attackCycle++;
+        // }
     }
 }

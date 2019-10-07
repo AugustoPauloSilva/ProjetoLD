@@ -37,7 +37,10 @@ public class BombBehavior : MonoBehaviour
             other.GetComponent<PlayerInput>().TakeDamage(1, false, 0);
         }
         else if (other.tag == "Enemy"){
-            // Dano Inimigo
+            if (other.GetComponent<BossBehavior>() != null) 
+                other.GetComponent<BossBehavior>().TakeDamage(1);
+            else if (other.GetComponent<Enemy1Behavior>() != null) 
+                other.GetComponent<Enemy1Behavior>().TakeDamage(1);
         }
         else if (other.tag == "Boss"){
             other.GetComponent<BossBehavior>().takeBomb();
