@@ -24,6 +24,10 @@ TextureImporter:
     21300038: Macter2_19
     21300040: Macter2_20
     21300042: Macter2_21
+    21300044: Macter2_22
+    21300046: Macter2_23
+    21300048: Macter2_24
+    21300050: Macter2_25
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -175,7 +179,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dc6fb11b3bb65dc4581e4c5a6f61177c
+      spriteID: 11f04cb0fd0fc4749b734cdbfb9d4694
       vertices: []
       indices: 
       edges: []
@@ -195,7 +199,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d92e0e6287502874cbe0dc927f1a3d62
+      spriteID: a92244714c95df545a41ce3a8bce5f8a
       vertices: []
       indices: 
       edges: []
@@ -215,7 +219,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 60386d69decf4164c9e902eeb546d8c6
+      spriteID: e2915c0b1b40e9144b8292d4617f5426
       vertices: []
       indices: 
       edges: []
@@ -235,7 +239,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a1681f3a0ff6fd14aa2a3d58571e56d6
+      spriteID: 54001513d3caa464d909e9b9772b6fc5
       vertices: []
       indices: 
       edges: []
@@ -246,7 +250,7 @@ TextureImporter:
         serializedVersion: 2
         x: 2043
         y: 2929
-        width: 204
+        width: 201
         height: 523
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -255,7 +259,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d5cc1d558aa13c4469bab8a5845eb1ce
+      spriteID: c68b5c3317394374cb0894b68c3f9a38
       vertices: []
       indices: 
       edges: []
@@ -275,7 +279,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 777b49508382c8c4e8a288319a466d10
+      spriteID: b00a254631733f84b9a5b6e2803e1d4f
       vertices: []
       indices: 
       edges: []
@@ -284,10 +288,10 @@ TextureImporter:
       name: Macter2_6
       rect:
         serializedVersion: 2
-        x: 597
-        y: 2206
-        width: 435
-        height: 441
+        x: 596
+        y: 2209
+        width: 434
+        height: 438
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -295,7 +299,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 955feeeb098eea741b3ca48a7fa3a825
+      spriteID: 6c62a85a918eca843aa106b859b83ea4
       vertices: []
       indices: 
       edges: []
@@ -304,9 +308,9 @@ TextureImporter:
       name: Macter2_7
       rect:
         serializedVersion: 2
-        x: 1027
+        x: 1030
         y: 2206
-        width: 440
+        width: 437
         height: 441
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -315,7 +319,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 96c9b93ef5298574fb0ea3e93572db1c
+      spriteID: ff4e364b7e9ba1a42ad279280773ab7e
       vertices: []
       indices: 
       edges: []
@@ -326,8 +330,8 @@ TextureImporter:
         serializedVersion: 2
         x: 1493
         y: 2206
-        width: 424
-        height: 438
+        width: 426
+        height: 439
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -335,7 +339,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1edcb7546bee4054183ab5f076db29c8
+      spriteID: 24753110563850c4d862f4b68f0d0c45
       vertices: []
       indices: 
       edges: []
@@ -355,7 +359,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 39f9e369d2db33c469d1b69dbbe15632
+      spriteID: cf5d9d4bed034a14ea992889fdfbc6f6
       vertices: []
       indices: 
       edges: []
@@ -365,9 +369,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1339
-        y: 1562
+        y: 1563
         width: 166
-        height: 511
+        height: 510
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -375,7 +379,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 42f6f73afd4ba9a40b7c669357aefc6c
+      spriteID: bf0669193d70544418a993ccbdb312c7
       vertices: []
       indices: 
       edges: []
@@ -384,10 +388,10 @@ TextureImporter:
       name: Macter2_11
       rect:
         serializedVersion: 2
-        x: 1510
+        x: 1507
         y: 1609
-        width: 5
-        height: 9
+        width: 8
+        height: 12
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -395,7 +399,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1c5ee1beb23fdbc47a85a9896fc4211b
+      spriteID: 456fe5aec2d18044c8a48e91405a1c97
       vertices: []
       indices: 
       edges: []
@@ -404,9 +408,9 @@ TextureImporter:
       name: Macter2_12
       rect:
         serializedVersion: 2
-        x: 1666
+        x: 1664
         y: 1561
-        width: 172
+        width: 174
         height: 512
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -415,7 +419,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1d7fd5a00be6d8443a0a4983ff1c4ae3
+      spriteID: 6344365f8c02fb448ac577dd9a848848
       vertices: []
       indices: 
       edges: []
@@ -424,10 +428,10 @@ TextureImporter:
       name: Macter2_13
       rect:
         serializedVersion: 2
-        x: 52
-        y: 870
-        width: 367
-        height: 554
+        x: 1842
+        y: 1609
+        width: 7
+        height: 9
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -435,7 +439,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7c1b134fcce53304b876bc431af7bdbd
+      spriteID: 218f036765b8762419f82a4421c03e29
       vertices: []
       indices: 
       edges: []
@@ -444,18 +448,18 @@ TextureImporter:
       name: Macter2_14
       rect:
         serializedVersion: 2
-        x: 527
-        y: 876
-        width: 407
-        height: 548
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 52
+        y: 870
+        width: 367
+        height: 554
+      alignment: 9
+      pivot: {x: 0.3074663, y: 0.5377913}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7ff4898cee508264f8b6ce7f348f9558
+      spriteID: 9237d24bbe6a9144ba3b7b9574f1a6ae
       vertices: []
       indices: 
       edges: []
@@ -464,18 +468,18 @@ TextureImporter:
       name: Macter2_15
       rect:
         serializedVersion: 2
-        x: 993
-        y: 904
-        width: 374
-        height: 474
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 527
+        y: 876
+        width: 407
+        height: 550
+      alignment: 9
+      pivot: {x: 0.2749481, y: 0.5285498}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ca44f5ff0d91ead48baf4eebea321d4c
+      spriteID: 7b6159dc4e5dfb543b21fe305857acfc
       vertices: []
       indices: 
       edges: []
@@ -484,18 +488,18 @@ TextureImporter:
       name: Macter2_16
       rect:
         serializedVersion: 2
-        x: 1457
-        y: 886
-        width: 458
-        height: 470
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 994
+        y: 904
+        width: 373
+        height: 474
+      alignment: 9
+      pivot: {x: 0.5505898, y: 0.52208495}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2757ad48aa10ffb46b6cb1e22ccd0173
+      spriteID: a1d294c93ca406543944cd9d2e68400e
       vertices: []
       indices: 
       edges: []
@@ -504,24 +508,44 @@ TextureImporter:
       name: Macter2_17
       rect:
         serializedVersion: 2
-        x: 1916
-        y: 880
-        width: 496
-        height: 527
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 1457
+        y: 886
+        width: 459
+        height: 470
+      alignment: 9
+      pivot: {x: 0.87835014, y: 0.5576533}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 957390d01287c604aa529daef7262180
+      spriteID: eb8e4f6eb231084459a59237a11ee47d
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
       name: Macter2_18
+      rect:
+        serializedVersion: 2
+        x: 1916
+        y: 877
+        width: 496
+        height: 530
+      alignment: 9
+      pivot: {x: 0.80251485, y: 0.5148138}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bee8e751f6496564096a765e7b598759
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Macter2_19
       rect:
         serializedVersion: 2
         x: 2421
@@ -535,27 +559,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 255b59ba0b1009846b0d35274d10f4ce
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Macter2_19
-      rect:
-        serializedVersion: 2
-        x: 12
-        y: 182
-        width: 359
-        height: 543
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6818a806577c00e4382f4fea65a00040
+      spriteID: 89234ea1e9d47de4ca3d9b6cecaceea4
       vertices: []
       indices: 
       edges: []
@@ -564,18 +568,18 @@ TextureImporter:
       name: Macter2_20
       rect:
         serializedVersion: 2
-        x: 378
-        y: 572
-        width: 5
-        height: 4
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 12
+        y: 182
+        width: 359
+        height: 543
+      alignment: 9
+      pivot: {x: 0.6799767, y: 0.51757175}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2639c89081396a34da923be2166751cb
+      spriteID: cd5c30af27b36644f988532dfe05f659
       vertices: []
       indices: 
       edges: []
@@ -584,10 +588,10 @@ TextureImporter:
       name: Macter2_21
       rect:
         serializedVersion: 2
-        x: 45
-        y: 508
+        x: 378
+        y: 571
         width: 5
-        height: 6
+        height: 5
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -595,7 +599,87 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4d9121049e8a099439bec430617a8967
+      spriteID: d3010e9b59d86c8418e0c644be131972
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Macter2_22
+      rect:
+        serializedVersion: 2
+        x: 486
+        y: 226
+        width: 446
+        height: 440
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e5feadb39054f38419434b6af8f89dfc
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Macter2_23
+      rect:
+        serializedVersion: 2
+        x: 986
+        y: 227
+        width: 559
+        height: 440
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f07c20e2042b7534bb7e8b2f29f80533
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Macter2_24
+      rect:
+        serializedVersion: 2
+        x: 1594
+        y: 226
+        width: 773
+        height: 440
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fc4d19a06abc3c64d831902b40e56b59
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Macter2_25
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 508
+        width: 5
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8d749a7dab41805498aeea1f4bc3804d
       vertices: []
       indices: 
       edges: []
