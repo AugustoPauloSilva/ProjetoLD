@@ -34,7 +34,7 @@ public class Enemy1Behavior : MonoBehaviour
     void OnCollisionEnter2D(Collision2D other) {
         if(other.gameObject.tag == "Attack") return;
         if(other.gameObject.tag == "Play"){
-            other.gameObject.GetComponent<PlayerInput>().TakeDamage();
+            other.gameObject.GetComponent<PlayerInput>().TakeDamage(1, false, 0);
             if (speed>0 && (Vector2.Angle(other.GetContact(0).normal,Vector2.right)<10f))
                 speed = -speed;
             else if (speed<0 && (Vector2.Angle(other.GetContact(0).normal,Vector2.left)<10f))
