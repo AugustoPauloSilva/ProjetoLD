@@ -8,17 +8,25 @@ public class Enemy1Behavior : MonoBehaviour
     public IsOnGround groundLeft;
     public float speed = 50f;
     public float turnTimer = 15f;
+	public int maxhealth = 3;
+	public int health;
+	public float maxTimeOtherDamage = 0.2f;
+	private float timeOtherDamage = 0;
+	
     float turnCount = 0f;
     Rigidbody2D body;
 
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
+		health = maxhealth;
     }
 
     void Update()
     {
-
+		if(health <= 0){
+			Destroy(gameObject);
+		}
     }
 
     void FixedUpdate()
@@ -28,7 +36,9 @@ public class Enemy1Behavior : MonoBehaviour
             turnCount = turnTimer;
         }
         if (turnCount > 0) turnCount--;
-        body.velocity = new Vector2(speed*Time.fixedDeltaTime,0);
+        body.velocity = new Vector2(speed*Time.fixedDeltaTime, 0);
+		
+		timeOtherDamage -= Time.deltaTime;
     }
 
     void OnCollisionEnter2D(Collision2D other) {
@@ -43,4 +53,12 @@ public class Enemy1Behavior : MonoBehaviour
         if(Vector2.Angle(other.GetContact(0).normal,Vector2.up) >= 10f) 
             speed = -speed;
     }
+	
+	public void TakeDamage(int damage){
+		//Animacao, ficar piscando por maxDamageTime
+		if(timeOtherDamage <= 0){
+			health -= damage;
+			timeOtherDamage = maxTimeOtherDamage;	//Tempo de ivulnerabilidade, o player n se mexe
+		}
+	}
 }
