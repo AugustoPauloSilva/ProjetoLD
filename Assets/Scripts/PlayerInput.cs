@@ -42,14 +42,15 @@ public class PlayerInput : MonoBehaviour
 	Animator anim;
 	SpriteRenderer spriteRender;
 	Vida life;
+	public GameObject Animations;
 	
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
         speed = Vector2.zero;
         mouse = GetComponent<FaceMouse>();
-		anim = GetComponent<Animator>();
-		spriteRender = GetComponent<SpriteRenderer>();
+		anim = Animations.GetComponent<Animator>();
+		spriteRender = Animations.GetComponent<SpriteRenderer>();
 		lastPosition = Vector3.zero;
 		life = GetComponent<Vida>();
     }
