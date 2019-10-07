@@ -12,32 +12,37 @@ public class PlayerInput : MonoBehaviour
 	public float dashSpeed = 2000f;
    	public int dashDelay = 0;
 	public float maxDashTime = 5;
-	public int verticalSpeed = -200;
 	public float floatingSpeed = 40;
 	public int health;		
 	public int maxHealth = 3;
-	public bool isGrounded = false;
- 	public bool secondJumpAcquired = false;
-	public bool dashAcquired = false;
 	public float dashTime;
 	public float fallDistance = -300f;
 	public int fallDamage = 1;
-	public bool usingTelekinesis = false;					
+	public float maxTakeDamageTime = 0.15f;
+	
+	
+	//Variaveis
+	public bool isGrounded = false;
+ 	public bool secondJumpAcquired = false;
+	public bool dashAcquired = false;
+	public bool usingTelekinesis = false;
 	private bool jump = false;		
 	private int nCollisions = 0;
    	private bool dashRight = false;
     private bool dashLeft = false;
     private bool secondJumpAvailabe = true;
     private Vector2 speed;
-	public bool dashAvailable = false;
+	private bool dashAvailable = false;
 	private Vector3 lastPosition;
+	private float takeDamageTime;
 	
     Rigidbody2D body;
 	FaceMouse mouse;
 	Vector2 normal;
 	Animator anim;
 	SpriteRenderer spriteRender;
-
+	Vida life;
+	
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
@@ -46,6 +51,7 @@ public class PlayerInput : MonoBehaviour
 		anim = GetComponent<Animator>();
 		spriteRender = GetComponent<SpriteRenderer>();
 		lastPosition = Vector3.zero;
+		life = GetComponent<Vida>();
     }
 
     void Update()
@@ -88,7 +94,7 @@ public class PlayerInput : MonoBehaviour
 		else anim.SetBool("Moonwalking", false);
 		
 
-		if(isGrounded == false && speed.y < verticalSpeed){
+		if(isGrounded == false && speed.y < 0){
 				anim.SetBool("Fall", true);
 				anim.SetBool("Jump", false);	
 		}
@@ -125,8 +131,9 @@ public class PlayerInput : MonoBehaviour
 		nCollisions++;
 		normal = col.GetContact(0).normal;
 		if (Vector2.Angle(normal, new Vector2(0f, 1f)) < 10f){
-           speed.y = 0;
-		   lastPosition = transform.position;		
+			speed.y = 0;
+			if(col.gameObject.tag == "Ground")
+				lastPosition = transform.position;
 		}
 		if (Vector2.Angle(normal, new Vector2(0f, -1f)) < 10f)
             speed.y = 0;
@@ -140,81 +147,92 @@ public class PlayerInput : MonoBehaviour
 
     void FixedUpdate()
     {
-		if (dashTime <= 0f)
-		{
-			speed.x = 0f;
-
-			if (Input.GetKey(KeyCode.D))
+		if(takeDamageTime <= 0){
+			if (dashTime <= 0f)
 			{
-				speed.x = usedSpeed * Time.deltaTime;
-				spriteRender.flipX = true;
-				anim.SetBool("Walk", true);
+				speed.x = 0f;
+
+				if (Input.GetKey(KeyCode.D))
+				{
+					speed.x = usedSpeed * Time.deltaTime;
+					spriteRender.flipX = true;
+					anim.SetBool("Walk", true);
+				}
+				
+				if (Input.GetKey(KeyCode.A))
+				{
+					speed.x = -usedSpeed * Time.deltaTime;
+					spriteRender.flipX = false;
+					anim.SetBool("Walk", true);
+				}
+				
+				if (!(Input.GetKey(KeyCode.D))&& !(Input.GetKey(KeyCode.A))){
+					anim.SetBool("Walk", false);
+				}
+
+				if (Input.GetKey(KeyCode.W) && !isGrounded)
+				{
+					speed.y += floatingSpeed * Time.deltaTime;	
+				}
+				
+				if (Input.GetKey(KeyCode.S) && !isGrounded && speed.y > 0) speed.y = 0;
+
+				if (jump)
+				{
+					speed.y = jumpSpeed * Time.deltaTime;
+					jump = false;
+				}
+				if (!isGrounded){
+					speed.y -= AccGrav * Time.deltaTime;
+					if (speed.y < maxFallSpeed) speed.y = maxFallSpeed;
+				}
+					
+					
+				anim.SetBool("Dash", false);
+			}
+			else {
+				dashTime -= Time.deltaTime;
+				speed.y = 0;
+			}
+
+			if (dashRight)
+			{
+				anim.SetBool("Dash", true);
+				speed.x = dashSpeed * Time.deltaTime;
+				dashRight = false;	
+				dashDelay = 30;	
+			}
+
+			if (dashLeft)
+			{
+				anim.SetBool("Dash", true);
+				speed.x = -dashSpeed * Time.deltaTime;
+				dashLeft = false;
+				dashDelay = 30;
 			}
 			
-			if (Input.GetKey(KeyCode.A))
-			{
-				speed.x = -usedSpeed * Time.deltaTime;
-				spriteRender.flipX = false;
-				anim.SetBool("Walk", true);
-			}
-			
-			if (!(Input.GetKey(KeyCode.D))&& !(Input.GetKey(KeyCode.A))){
-				anim.SetBool("Walk", false);
-			}
-
-			if (Input.GetKey(KeyCode.W) && !isGrounded)
-			{
-				speed.y += floatingSpeed * Time.deltaTime;	
-			}
-			
-			if (Input.GetKey(KeyCode.S) && !isGrounded && speed.y > 0) speed.y = 0;
-
-			if (jump)
-			{
-				speed.y = jumpSpeed * Time.deltaTime;
-				jump = false;
-			}
-			if (!isGrounded){
-				speed.y -= AccGrav * Time.deltaTime;
-				if (speed.y < maxFallSpeed) speed.y = maxFallSpeed;
+			if(transform.position.y <= fallDistance){	//Rotina de cair do mundo		
+				transform.position = lastPosition;	//A posicao eh da primeira interacao com o ultimo objeto que o player ficou em pe
+				speed = Vector2.zero;
+				jump = true;
+				life.TakeDamage(fallDamage, false, 0);	//Perde fallDamage de vida
 			}
 				
-				
-			anim.SetBool("Dash", false);
+			if (dashDelay > 0) dashDelay--;
+			body.velocity = speed;
 		}
-		else {
-			dashTime-= Time.deltaTime;
-			speed.y = 0;
-		}
-
-		if (dashRight)
-		{
-			anim.SetBool("Dash", true);
-			speed.x = dashSpeed * Time.deltaTime;
-			dashRight = false;	
-			dashDelay = 30;	
-		}
-
-		if (dashLeft)
-		{
-			anim.SetBool("Dash", true);
-			speed.x = -dashSpeed * Time.deltaTime;
-			dashLeft = false;
-			dashDelay = 30;
-		}
-		
-		if(transform.position.y <= fallDistance){	//Rotina de cair do mundo		
-			transform.position = lastPosition;	//A posicao eh da primeira interacao com o ultimo objeto que o player ficou em pe		
-			speed = Vector2.zero;		
-			health -= fallDamage;	//Perde fallDamage de vida		
-		}
-			
-		if (dashDelay > 0) dashDelay--;
-		body.velocity = speed;
+		else takeDamageTime -= Time.deltaTime;
 	}
 	
-	public void TakeDamage (){		
-		Debug.Log("Doeu!");		
+	public void TakeDamage(int damage, bool _isPushed, float _angleOfPush){
+		//Animacao
+		life = life.TakeDamage(damage, _isPushed, _angleOfPush);
+		if(_isPushed){
+			speed.x = Mathf.Cos(_angleOfPush*Mathf.PI/180);
+			speed.y = Mathf.Sin(_angleOfPush*Mathf.PI/180);
+			takeDamageTime = maxTakeDamageTime;
+		}
+		_isPushed = false;
 	}
 	
 }
