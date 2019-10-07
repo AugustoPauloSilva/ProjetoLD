@@ -9,6 +9,9 @@ public class BombBehavior : MonoBehaviour
     bool endExplosion = false;
     float usedScale;
     float initScale;
+    bool playerHit = false;
+    bool bossHit = false;
+    bool enemyHit = false;
     void Start()
     {
         usedScale = transform.localScale.x;
@@ -32,18 +35,23 @@ public class BombBehavior : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other) {
-        if (other.tag == "Play"){
+    private void OnTriggerStay2D(Collider2D other) {
+        if (other.tag == "Play" && !playerHit){
             other.GetComponent<PlayerInput>().TakeDamage(1, false, 0);
+            playerHit = true;
         }
-        else if (other.tag == "Enemy"){
+        else if (other.tag == "Enemy" && !enemyHit){
             if (other.GetComponent<BossBehavior>() != null) 
                 other.GetComponent<BossBehavior>().TakeDamage(1);
             else if (other.GetComponent<Enemy1Behavior>() != null) 
                 other.GetComponent<Enemy1Behavior>().TakeDamage(1);
+            bossHit = true;
+            enemyHit = true;
         }
-        else if (other.tag == "Boss"){
+        else if (other.tag == "Boss" && !bossHit){
             other.GetComponent<BossBehavior>().takeBomb();
+            bossHit = true;
+            enemyHit = true;
         }
     }
 
