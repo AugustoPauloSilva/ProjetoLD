@@ -1047,17 +1047,7 @@ PrefabInstance:
     - target: {fileID: 6303396050346668532, guid: 749e8c9ed2a56f447b153e7e7453e5ba,
         type: 3}
       propertyPath: maxHealth
-      value: 1e+11
-      objectReference: {fileID: 0}
-    - target: {fileID: 6303396050346668532, guid: 749e8c9ed2a56f447b153e7e7453e5ba,
-        type: 3}
-      propertyPath: dashAcquired
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6303396050346668532, guid: 749e8c9ed2a56f447b153e7e7453e5ba,
-        type: 3}
-      propertyPath: secondJumpAcquired
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 749e8c9ed2a56f447b153e7e7453e5ba, type: 3}
