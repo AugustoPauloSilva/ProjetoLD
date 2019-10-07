@@ -10,12 +10,12 @@ public class FaceMouse : MonoBehaviour
     float strength = 5f;
     float armRotate;
     public GameObject arm;
-
+    public static PlayerInput player;
 	
     // Start is called before the first frame update
     void Start()
     {
-
+        player = GetComponent<PlayerInput>();
     }
 
     // Update is called once per frame

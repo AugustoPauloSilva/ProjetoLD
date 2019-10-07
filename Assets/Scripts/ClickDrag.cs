@@ -46,7 +46,8 @@ public class ClickDrag : MonoBehaviour
     }
 
     void OnCollisionEnter2D(Collision2D other) {
-        if (other.gameObject.tag == "Play") isDragging = false;
+        if (other.gameObject.tag == "Play" || other.gameObject.tag == "Enemy") 
+            isDragging = false;
     }
 
     void OnCollisionStay2D(Collision2D other) {

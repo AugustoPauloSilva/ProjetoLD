@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MouseInput : MonoBehaviour
 {
+    bool isOver = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -13,8 +14,8 @@ public class MouseInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(gameObject.tag == "Drag" && Input.GetMouseButtonDown(0) && 
-                FaceMouse.player.GetComponent<PlayerInput>().usingTelekinesis){
+        if (FaceMouse.player == null) return;
+        if (gameObject.tag == "Drag" && Input.GetMouseButtonDown(1)){
             if (!isOver) GetComponent<ClickDrag>().clickReaction2();
             else isOver = false;
         }
@@ -24,8 +25,7 @@ public class MouseInput : MonoBehaviour
         if (gameObject.tag == "Destructible" && Input.GetMouseButtonDown(1)){
             GetComponent<ClickObstacle>().clickReaction();
         }
-        else if (gameObject.tag == "Drag" && Input.GetMouseButtonDown(0) && 
-                FaceMouse.player.GetComponent<PlayerInput>().usingTelekinesis){
+        else if (gameObject.tag == "Drag" && Input.GetMouseButtonDown(1)){
             GetComponent<ClickDrag>().clickReaction();
             isOver = true;
         }
