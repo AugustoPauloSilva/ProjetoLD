@@ -18,7 +18,7 @@ public class BulletBehavior : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D other) {
         Collider2D aux = other.collider;
-        if (aux.tag == "Play") aux.GetComponent<PlayerInput>().TakeDamage();
+        if (aux.tag == "Play") aux.GetComponent<PlayerInput>().TakeDamage(1, false, 0);
         Destroy(gameObject);
     }
 }
