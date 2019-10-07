@@ -21,7 +21,8 @@ public class BossBehavior : MonoBehaviour
     float usedAngle = 90f;
     float initAngle = 90f;
     float finishAngle = -20f;
-    float rangedFinish = 120f;
+    float rangedFinish = 100f;
+    float rangedTravel = 0f;
     bool hasAttacked = true;
     bool meleeAttack = false;
     bool rangedAttack = false;
@@ -34,7 +35,8 @@ public class BossBehavior : MonoBehaviour
         playerScript = FaceMouse.player;
         body = GetComponent<Rigidbody2D>();
         walked = walkDistance;
-        rangedOffset = ranged.transform.position;
+        rangedOffset = Vector3.zero;
+        rangedOffset.x = -7f;
     }
 
     void Update()
@@ -51,6 +53,8 @@ public class BossBehavior : MonoBehaviour
             else if (Mathf.Abs(distance) < rangedFinish/2){
                 rangedAttack = true;
                 hasAttacked = true;
+                if (direction == 1) ranged.transform.position += 5*rangedOffset;
+                else ranged.transform.position -= 5*rangedOffset;
             }
         }
     }
@@ -70,8 +74,7 @@ public class BossBehavior : MonoBehaviour
         else if (walked >= 0 && walked < walkDistance){
             walked += walkSpeed*Time.fixedDeltaTime;
             body.velocity = new Vector2(direction*walkSpeed*Time.fixedDeltaTime,0);
-            ranged.transform.position = transform.position+
-                    new Vector3(direction*rangedOffset.x,rangedOffset.y,rangedOffset.z)/10;
+            ranged.transform.position = transform.position;
             if (walked >= walkDistance) body.velocity = Vector2.zero;
         }
         else{
@@ -94,7 +97,7 @@ public class BossBehavior : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D other) {
         if (other.tag == "Play"){
-            other.GetComponent<PlayerInput>().TakeDamage();
+            other.GetComponent<PlayerInput>().TakeDamage(1, false, 0);
         }
     }
 
@@ -137,21 +140,43 @@ public class BossBehavior : MonoBehaviour
     }
 
     void rangedActivate(){
-        ranged.SetActive(true);
+        rangedTravel += rangedSpeed*Time.fixedDeltaTime/25;
         if (direction == 1){
+            if (rangedTravel > 12f) rangeds[4].SetActive(true);
+            if (rangedTravel > 24f) rangeds[3].SetActive(true);
+            if (rangedTravel > 36f) rangeds[2].SetActive(true);
+            if (rangedTravel > 48f) rangeds[1].SetActive(true);
+            if (rangedTravel > 60f) rangeds[0].SetActive(true);
             ranged.transform.position += new Vector3
-                (rangedSpeed*Time.fixedDeltaTime/25,0,0);
-            if (ranged.transform.position.x > transform.position.x+rangedOffset.x/10+rangedFinish){
+                (rangedSpeed*Time.fixedDeltaTime/25f,0,0);
+            if (ranged.transform.position.x-transform.position.x > rangedFinish){
                 rangedAttack = false;
-                ranged.SetActive(false);
+                // ranged.SetActive(false);
+                rangedTravel = 0;
+                rangeds[0].SetActive(false);
+                rangeds[1].SetActive(false);
+                rangeds[2].SetActive(false);
+                rangeds[3].SetActive(false);
+                rangeds[4].SetActive(false);
             }
         }
         else{
+            if (rangedTravel > 12f) rangeds[0].SetActive(true);
+            if (rangedTravel > 24f) rangeds[1].SetActive(true);
+            if (rangedTravel > 36f) rangeds[2].SetActive(true);
+            if (rangedTravel > 48f) rangeds[3].SetActive(true);
+            if (rangedTravel > 60f) rangeds[4].SetActive(true);
             ranged.transform.position -= new Vector3
-                (rangedSpeed*Time.fixedDeltaTime/25,0,0);
-            if (ranged.transform.position.x < transform.position.x-rangedOffset.x/10-rangedFinish){
+                (rangedSpeed*Time.fixedDeltaTime/25f,0,0);
+            if (ranged.transform.position.x-transform.position.x < -rangedFinish){
                 rangedAttack = false;
-                ranged.SetActive(false);
+                // ranged.SetActive(false);
+                rangedTravel = 0f;
+                rangeds[0].SetActive(false);
+                rangeds[1].SetActive(false);
+                rangeds[2].SetActive(false);
+                rangeds[3].SetActive(false);
+                rangeds[4].SetActive(false);
             }
         }
     }

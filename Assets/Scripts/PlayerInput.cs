@@ -111,7 +111,7 @@ public class PlayerInput : MonoBehaviour
 		
 		if(health <= 0)
 			print("Game over");
-		else healthBar.SetSize(health/maxHealth);
+		// else healthBar.SetSize(health/maxHealth);
     }
 
     void OnCollisionStay2D(Collision2D col)
@@ -130,7 +130,7 @@ public class PlayerInput : MonoBehaviour
             isGrounded = false;
     }
 	
-	 void OnCollisionEnter2D(Collision2D col)
+	void OnCollisionEnter2D(Collision2D col)
     {
 		nCollisions++;
 		normal = col.GetContact(0).normal;
@@ -230,13 +230,13 @@ public class PlayerInput : MonoBehaviour
 	
 	public void TakeDamage(int damage, bool _isPushed, float _angleOfPush){
 		//Animacao, ficar piscando por maxDamageTime
+		Debug.Log("Doeu!");
 		health -= damage;
 		if(_isPushed){
 			speed.x = Mathf.Cos(_angleOfPush*Mathf.PI/180);
 			speed.y = Mathf.Sin(_angleOfPush*Mathf.PI/180);
 		}
 		takeDamageTime = maxTakeDamageTime;	//Tempo de ivulnerabilidade, o player n se meche
-		_isPushed = false;
 	}
 	
 }
