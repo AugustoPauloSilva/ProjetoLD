@@ -33,17 +33,18 @@ public class BossBehavior : MonoBehaviour
     bool bombAttack = false;
     Vector3 rangedOffset;
     PlayerInput playerScript;
-    Rigidbody2D body;
-
+	public int maxhealth = 3;
+	public int health;
+	public float maxTimeOtherDamage = 0.2f;
+	private float timeOtherDamage = 0;
+	
+    // Start is called before the first frame update
     void Start()
     {
-        playerScript = FaceMouse.player;
-        body = GetComponent<Rigidbody2D>();
-        walked = walkDistance;
-        rangedOffset = Vector3.zero;
-        rangedOffset.x = -7f;
+        // playerScript = FaceMouse.player.GetComponent<PlayerInput>();
     }
 
+    // Update is called once per frame
     void Update()
     {
         if (walked >= walkDistance && !hasAttacked){
@@ -203,4 +204,11 @@ public class BossBehavior : MonoBehaviour
         aux.GetComponent<Rigidbody2D>().velocity = new Vector2(direction*0.5f*bombYSpeed,bombYSpeed);
         bombAttack = false;
     }
+	public void TakeDamage(int damage){
+		//Animacao, ficar piscando por maxDamageTime
+		if(timeOtherDamage <= 0){
+			health -= damage;
+			timeOtherDamage = maxTimeOtherDamage;	//Tempo de ivulnerabilidade, o player n se mexe
+		}
+	}
 }
