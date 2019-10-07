@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,7 +16,8 @@ public class PlayerInput : MonoBehaviour
 	public float dashTime;
 	public float fallDistance = -300f;
 	public int fallDamage = 1;
-	public float maxTakeDamageTime = 0.15f;
+	public float maxTimeOtherDamage = 0.5f;
+	public float maxAttackDelay = 0.1f;
 	
 	//Variaveis
 	public bool isGrounded = false;
@@ -31,9 +32,12 @@ public class PlayerInput : MonoBehaviour
     private Vector2 speed;
 	private bool dashAvailable = false;
 	private Vector3 lastPosition;
-	private float takeDamageTime;
+	private float timeOtherDamage;
 	public float maxHealth = 10;
 	public float health;
+	public float attackDelay = 0;
+	public bool battleMode = true; //True = battlemode, false = magicmode
+	public bool attack = false;
 	
     private Rigidbody2D body;
 	private FaceMouse mouse;
@@ -42,9 +46,9 @@ public class PlayerInput : MonoBehaviour
 	private SpriteRenderer spriteRender;
 	public GameObject Animations;
 	[SerializeField] private HealthBar healthBar;
+	public GameObject claw;
 	
-    void Start()
-    {
+    void Start(){
         body = GetComponent<Rigidbody2D>();
         speed = Vector2.zero;
         mouse = GetComponent<FaceMouse>();
@@ -55,8 +59,7 @@ public class PlayerInput : MonoBehaviour
 		health = maxHealth;
     }
 
-    void Update()
-    {
+    void Update(){
 		if (Input.GetKeyDown(KeyCode.W) && isGrounded) {
 			jump = true;
 			anim.SetBool("Jump", true);
@@ -109,13 +112,23 @@ public class PlayerInput : MonoBehaviour
 		}
 		else anim.SetBool("OnAir", false);
 		
-		if(health <= 0)
+		if(health <= 0){	//Rotina de diminuir vida e checar se esta vivo
+			healthBar.SetSize(0);
 			print("Game over");
-		// else healthBar.SetSize(health/maxHealth);
+		}
+		else healthBar.SetSize(health/maxHealth);
+		
+		if(Input.GetKeyDown(KeyCode.Q)) battleMode = true;
+		
+		if(Input.GetKeyDown(KeyCode.E)) battleMode = false;
+		
+		if(Input.GetKeyDown(KeyCode.Mouse0) && (battleMode = true) && (attackDelay <= 0)){ // Ativa a variavel ataque
+			attack = true;
+		}
     }
 
-    void OnCollisionStay2D(Collision2D col)
-    {
+	//Colisoes
+    void OnCollisionStay2D(Collision2D col){
 		normal = col.GetContact(0).normal;
 		if (Vector2.Angle(normal, new Vector2(0f, 1f)) < 10f)
         {
@@ -130,8 +143,7 @@ public class PlayerInput : MonoBehaviour
             isGrounded = false;
     }
 	
-	void OnCollisionEnter2D(Collision2D col)
-    {
+	 void OnCollisionEnter2D(Collision2D col){
 		nCollisions++;
 		normal = col.GetContact(0).normal;
 		if (Vector2.Angle(normal, new Vector2(0f, 1f)) < 10f){
@@ -141,6 +153,9 @@ public class PlayerInput : MonoBehaviour
 		}
 		if (Vector2.Angle(normal, new Vector2(0f, -1f)) < 10f)
 			speed.y = 0;
+		if(col.otherCollider.gameObject.tag == "Attack" && col.gameObject.tag == "Enemy"){ // rotina de ataque
+			print("ola");
+		}
     }
 	
 	void OnCollisionExit2D(Collision2D col){
@@ -149,11 +164,10 @@ public class PlayerInput : MonoBehaviour
 		anim.SetBool("OnGround", false);
 	}
 
-    void FixedUpdate()
-    {
-		if(takeDamageTime <= 0){
-			if (dashTime <= 0f)
-			{
+    void FixedUpdate(){
+		//if(timeOtherDamage <= 0){	//Checa se o cooldown de tomar dano ja saiu
+			if (dashTime <= 0f){	//Checa se o cooldown do dash ja acabou
+				//Coisas que nao podem ser feitas durante o dash estao aqui
 				speed.x = 0f;
 
 				if (Input.GetKey(KeyCode.D))
@@ -190,15 +204,14 @@ public class PlayerInput : MonoBehaviour
 					speed.y -= AccGrav * Time.deltaTime;
 					if (speed.y < maxFallSpeed) speed.y = maxFallSpeed;
 				}
-					
-					
+				
 				anim.SetBool("Dash", false);
 			}
-			else {
+			else {	//Coisas que devem ser feitas durante o dash estao aqui
 				dashTime -= Time.deltaTime;
-				speed.y = 0;
+				speed.y = 0;	//Enquanto esta no dash a vel em y eh 0
 			}
-
+			//Coisas que devem ser feitas com ou sem dash ativado
 			if (dashRight)
 			{
 				anim.SetBool("Dash", true);
@@ -222,21 +235,27 @@ public class PlayerInput : MonoBehaviour
 				TakeDamage(fallDamage, false, 0);
 			}
 				
-			if (dashDelay > 0) dashDelay--;
+			if (dashDelay > 0) dashDelay--;	//Recarregar uso do dash
 			body.velocity = speed;
-		}
-		else takeDamageTime -= Time.deltaTime;
+			
+			if(attack){
+				attackDelay = maxAttackDelay;
+				
+			}
+			attackDelay -= Time.deltaTime;
+		//}
+		 timeOtherDamage -= Time.deltaTime;
 	}
 	
 	public void TakeDamage(int damage, bool _isPushed, float _angleOfPush){
 		//Animacao, ficar piscando por maxDamageTime
-		Debug.Log("Doeu!");
-		health -= damage;
-		if(_isPushed){
-			speed.x = Mathf.Cos(_angleOfPush*Mathf.PI/180);
-			speed.y = Mathf.Sin(_angleOfPush*Mathf.PI/180);
+		if(timeOtherDamage <= 0){	
+			health -= damage;
+			if(_isPushed){
+				speed.x = Mathf.Cos(_angleOfPush*Mathf.PI/180);
+				speed.y = Mathf.Sin(_angleOfPush*Mathf.PI/180);
+			}
+			timeOtherDamage = maxTimeOtherDamage;	//Tempo de ivulnerabilidade, o player n se mexe
 		}
-		takeDamageTime = maxTakeDamageTime;	//Tempo de ivulnerabilidade, o player n se meche
 	}
-	
 }
