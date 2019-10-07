@@ -13,13 +13,10 @@ public class PlayerInput : MonoBehaviour
    	public int dashDelay = 0;
 	public float maxDashTime = 5;
 	public float floatingSpeed = 40;
-	public int health;		
-	public int maxHealth = 3;
 	public float dashTime;
 	public float fallDistance = -300f;
 	public int fallDamage = 1;
 	public float maxTakeDamageTime = 0.15f;
-	
 	
 	//Variaveis
 	public bool isGrounded = false;
@@ -35,24 +32,27 @@ public class PlayerInput : MonoBehaviour
 	private bool dashAvailable = false;
 	private Vector3 lastPosition;
 	private float takeDamageTime;
+	public float maxHealth = 10;
+	public float health;
 	
-    Rigidbody2D body;
-	FaceMouse mouse;
-	Vector2 normal;
-	Animator anim;
-	SpriteRenderer spriteRender;
-	Vida life;
+    private Rigidbody2D body;
+	private FaceMouse mouse;
+	private Vector2 normal;
+	private Animator anim;
+	private SpriteRenderer spriteRender;
 	public GameObject Animations;
+	[SerializeField] private HealthBar healthBar;
 	
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
         speed = Vector2.zero;
         mouse = GetComponent<FaceMouse>();
+		anim = GetComponent<Animator>();
 		anim = Animations.GetComponent<Animator>();
 		spriteRender = Animations.GetComponent<SpriteRenderer>();
 		lastPosition = Vector3.zero;
-		life = GetComponent<Vida>();
+		health = maxHealth;
     }
 
     void Update()
@@ -109,6 +109,9 @@ public class PlayerInput : MonoBehaviour
 		}
 		else anim.SetBool("OnAir", false);
 		
+		if(health <= 0)
+			print("Game over");
+		else healthBar.SetSize(health/maxHealth);
     }
 
     void OnCollisionStay2D(Collision2D col)
@@ -137,7 +140,7 @@ public class PlayerInput : MonoBehaviour
 				lastPosition = transform.position;
 		}
 		if (Vector2.Angle(normal, new Vector2(0f, -1f)) < 10f)
-            speed.y = 0;
+			speed.y = 0;
     }
 	
 	void OnCollisionExit2D(Collision2D col){
@@ -216,7 +219,7 @@ public class PlayerInput : MonoBehaviour
 				transform.position = lastPosition;	//A posicao eh da primeira interacao com o ultimo objeto que o player ficou em pe
 				speed = Vector2.zero;
 				jump = true;
-				life.TakeDamage(fallDamage, false, 0);	//Perde fallDamage de vida
+				TakeDamage(fallDamage, false, 0);
 			}
 				
 			if (dashDelay > 0) dashDelay--;
@@ -226,13 +229,13 @@ public class PlayerInput : MonoBehaviour
 	}
 	
 	public void TakeDamage(int damage, bool _isPushed, float _angleOfPush){
-		//Animacao
-		life = life.TakeDamage(damage, _isPushed, _angleOfPush);
+		//Animacao, ficar piscando por maxDamageTime
+		health -= damage;
 		if(_isPushed){
 			speed.x = Mathf.Cos(_angleOfPush*Mathf.PI/180);
 			speed.y = Mathf.Sin(_angleOfPush*Mathf.PI/180);
-			takeDamageTime = maxTakeDamageTime;
 		}
+		takeDamageTime = maxTakeDamageTime;	//Tempo de ivulnerabilidade, o player n se meche
 		_isPushed = false;
 	}
 	
