@@ -230,6 +230,7 @@ public class BossBehavior : MonoBehaviour
         Vector3 aux2 = transform.position;
         aux2.y += 7f;
         aux2.x += 3*direction;
+        aux2.z = -1;
         GameObject aux = Instantiate(bombOrigin,aux2,transform.rotation);
         aux.GetComponent<Rigidbody2D>().velocity = new Vector2(direction*0.6f*bombYSpeed,1.2f*bombYSpeed);
         if (attackCycle >= 5){

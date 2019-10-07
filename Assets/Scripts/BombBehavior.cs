@@ -40,17 +40,16 @@ public class BombBehavior : MonoBehaviour
             other.GetComponent<PlayerInput>().TakeDamage(1, false, 0);
             playerHit = true;
         }
+        else if (other.tag == "Boss" && !bossHit){
+            other.GetComponent<BossBehavior>().takeBomb();
+            bossHit = true;
+            enemyHit = true;
+        }
         else if (other.tag == "Enemy" && !enemyHit){
             if (other.GetComponent<BossBehavior>() != null) 
                 other.GetComponent<BossBehavior>().TakeDamage(1);
             else if (other.GetComponent<Enemy1Behavior>() != null) 
                 other.GetComponent<Enemy1Behavior>().TakeDamage(1);
-            bossHit = true;
-            enemyHit = true;
-        }
-        else if (other.tag == "Boss" && !bossHit){
-            other.GetComponent<BossBehavior>().takeBomb();
-            bossHit = true;
             enemyHit = true;
         }
     }
