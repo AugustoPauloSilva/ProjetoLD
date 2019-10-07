@@ -117,7 +117,7 @@ public class PlayerInput : MonoBehaviour
 			healthBar.SetSize(0);
 			print("Game over");
 		}
-		else healthBar.SetSize(health/maxHealth);
+		// else healthBar.SetSize(health/maxHealth);
 		
 		if(Input.GetKeyDown(KeyCode.Q)) battleMode = true;
 		

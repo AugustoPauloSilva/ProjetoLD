@@ -39,6 +39,9 @@ public class BombBehavior : MonoBehaviour
         else if (other.tag == "Enemy"){
             // Dano Inimigo
         }
+        else if (other.tag == "Boss"){
+            other.GetComponent<BossBehavior>().takeBomb();
+        }
     }
 
     void OnCollisionEnter2D(Collision2D other) {

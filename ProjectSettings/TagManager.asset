@@ -6,6 +6,13 @@ TagManager:
   tags:
   - Obstacle
   - Ground
+  - Enemy
+  - Play
+  - Destructible
+  - EnemyMove
+  - Drag
+  - Attack
+  - Boss
   layers:
   - Default
   - TransparentFX

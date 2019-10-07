@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class BossBehavior : MonoBehaviour
 {
-    public float walkFrequency = 200f;
-    public float walkDistance = 1200f;
-    public float walkSpeed = 1000f;
-    public float meleeRange = 15f;
-    public float meleeDelay = 10f;
-    public float rangedSpeed = 2000f;
+    public float walkFrequency = 100f;
+    public float walkDistance = 700f;
+    public float walkSpeed = 1700f;
+    public float meleeRange = 12f;
+    public float meleeDelay = 5f;
+    public float rangedDelay = 15f;
+    public float rangedSpeed = 1900f;
     public float bombYSpeed = 50f;
     public int attackCycle = 3;
+    public int stunTime = 50;
     public GameObject arm;
     public GameObject ranged;
     public GameObject[] rangeds;
@@ -19,32 +21,38 @@ public class BossBehavior : MonoBehaviour
     float walked = 0f;
     float walkTimer = 0f;
     float meleeTimer = 0f;
+    float rangedTimer = 0f;
     float distance;
     float direction = 1;
     float usedAngle = 90f;
     float initAngle = 90f;
     float finishAngle = -20f;
-    float rangedFinish = 100f;
+    float rangedFinish = 90f;
     float rangedTravel = 0f;
     int attackCount = 0;
+    int stunCount = 0;
     bool hasAttacked = true;
     bool meleeAttack = false;
     bool rangedAttack = false;
     bool bombAttack = false;
+    bool isStunned = false;
     Vector3 rangedOffset;
     PlayerInput playerScript;
+    Rigidbody2D body;
 	public int maxhealth = 3;
 	public int health;
 	public float maxTimeOtherDamage = 0.2f;
 	private float timeOtherDamage = 0;
-	
-    // Start is called before the first frame update
+
     void Start()
     {
-        // playerScript = FaceMouse.player.GetComponent<PlayerInput>();
+        playerScript = FaceMouse.player;
+        body = GetComponent<Rigidbody2D>();
+        walked = walkDistance;
+        rangedOffset = Vector3.zero;
+        rangedOffset.x = -7f;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (walked >= walkDistance && !hasAttacked){
@@ -68,6 +76,7 @@ public class BossBehavior : MonoBehaviour
                 hasAttacked = true;
                 if (direction == 1) ranged.transform.position += 5*rangedOffset;
                 else ranged.transform.position -= 5*rangedOffset;
+                rangedTimer = 0;
             }
         }
     }
@@ -75,6 +84,16 @@ public class BossBehavior : MonoBehaviour
     void FixedUpdate() {
         distance = playerScript.transform.position.x-transform.position.x;
 
+        if (isStunned){
+            stunCount++;
+            body.velocity = Vector2.zero;
+
+            if (stunCount > stunTime){
+                gameObject.tag = "Boss";
+                isStunned = false;
+            }
+            return;
+        }
         if (walkTimer > walkFrequency){
             direction = distance;
             direction = (int)(direction/Mathf.Abs(direction));
@@ -156,6 +175,8 @@ public class BossBehavior : MonoBehaviour
     }
 
     void rangedActivate(){
+        rangedTimer++;
+        if (rangedTimer < rangedDelay) return;
         rangedTravel += rangedSpeed*Time.fixedDeltaTime/25;
         if (direction == 1){
             if (rangedTravel > 12f) rangeds[4].SetActive(true);
@@ -204,11 +225,29 @@ public class BossBehavior : MonoBehaviour
         aux.GetComponent<Rigidbody2D>().velocity = new Vector2(direction*0.5f*bombYSpeed,bombYSpeed);
         bombAttack = false;
     }
+
 	public void TakeDamage(int damage){
 		//Animacao, ficar piscando por maxDamageTime
-		if(timeOtherDamage <= 0){
+		if(timeOtherDamage <= 0 && gameObject.tag != "Boss"){
 			health -= damage;
 			timeOtherDamage = maxTimeOtherDamage;	//Tempo de ivulnerabilidade, o player n se mexe
+            gameObject.tag = "Boss";
+            isStunned = false;
 		}
 	}
+
+    public void takeBomb(){
+        isStunned = true;
+        gameObject.tag = "Enemy";
+        stunCount = 0;
+        rangeds[0].SetActive(false);
+        rangeds[1].SetActive(false);
+        rangeds[2].SetActive(false);
+        rangeds[3].SetActive(false);
+        rangeds[4].SetActive(false);
+        hasAttacked = true;
+        meleeAttack = false;
+        rangedAttack = false;
+        bombAttack = false;
+    }
 }
