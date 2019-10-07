@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class BossBehavior : MonoBehaviour
 {
-    public float walkFrequency = 100f;
-    public float walkDistance = 700f;
+    public float walkPeriod = 100f;
+    public float walkDistance = 800f;
     public float walkSpeed = 1700f;
     public float meleeRange = 12f;
     public float meleeDelay = 5f;
-    public float rangedDelay = 15f;
+    public float rangedDelay = 12f;
     public float rangedSpeed = 1900f;
     public float bombYSpeed = 50f;
+    public float bossDiffScale = 50f;
     public int attackCycle = 3;
     public int stunTime = 50;
     public GameObject arm;
@@ -51,6 +52,11 @@ public class BossBehavior : MonoBehaviour
         walked = walkDistance;
         rangedOffset = Vector3.zero;
         rangedOffset.x = -7f;
+
+        walkPeriod += bossDiffScale*2;
+        walkDistance -= bossDiffScale*4;
+        walkSpeed -= bossDiffScale*8;
+        rangedSpeed -= bossDiffScale*4;
     }
 
     void Update()
@@ -94,7 +100,7 @@ public class BossBehavior : MonoBehaviour
             }
             return;
         }
-        if (walkTimer > walkFrequency){
+        if (walkTimer > walkPeriod){
             direction = distance;
             direction = (int)(direction/Mathf.Abs(direction));
             walkTimer = 0;
@@ -219,10 +225,16 @@ public class BossBehavior : MonoBehaviour
     }
     void bombActivate(){
         Vector3 aux2 = transform.position;
-        aux2.x += 5*direction;
-        aux2.z = -1;
+        aux2.y += 7f;
+        aux2.x += 3*direction;
         GameObject aux = Instantiate(bombOrigin,aux2,transform.rotation);
-        aux.GetComponent<Rigidbody2D>().velocity = new Vector2(direction*0.5f*bombYSpeed,bombYSpeed);
+        aux.GetComponent<Rigidbody2D>().velocity = new Vector2(direction*0.6f*bombYSpeed,1.2f*bombYSpeed);
+        if (attackCycle >= 5){
+            aux2.x += 2*direction;
+            aux2.z = -1;
+            aux = Instantiate(bombOrigin,aux2,transform.rotation);
+            aux.GetComponent<Rigidbody2D>().velocity = new Vector2(direction*0.5f*bombYSpeed,bombYSpeed);
+        }
         bombAttack = false;
     }
 
@@ -233,6 +245,10 @@ public class BossBehavior : MonoBehaviour
 			timeOtherDamage = maxTimeOtherDamage;	//Tempo de ivulnerabilidade, o player n se mexe
             gameObject.tag = "Boss";
             isStunned = false;
+            walkPeriod -= bossDiffScale;
+            walkDistance += bossDiffScale*2;
+            walkSpeed += bossDiffScale*4;
+            rangedSpeed += bossDiffScale*2;
 		}
 	}
 
@@ -249,5 +265,12 @@ public class BossBehavior : MonoBehaviour
         meleeAttack = false;
         rangedAttack = false;
         bombAttack = false;
+        if (attackCycle < 5){
+            walkPeriod -= bossDiffScale;
+            walkDistance += bossDiffScale*2;
+            walkSpeed += bossDiffScale*4;
+            rangedSpeed += bossDiffScale*2;
+            attackCycle++;
+        }
     }
 }

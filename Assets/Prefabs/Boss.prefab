@@ -143,14 +143,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: babde4861a67ecf4496c1e414c3bce69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkFrequency: 100
-  walkDistance: 700
+  walkPeriod: 100
+  walkDistance: 800
   walkSpeed: 1700
   meleeRange: 12
   meleeDelay: 5
-  rangedDelay: 15
+  rangedDelay: 12
   rangedSpeed: 1900
   bombYSpeed: 25
+  bossDiffScale: 50
   attackCycle: 3
   stunTime: 500
   arm: {fileID: 626514874373644314}
