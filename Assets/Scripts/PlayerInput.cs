@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,7 +17,8 @@ public class PlayerInput : MonoBehaviour
 	public float fallDistance = -300f;
 	public int fallDamage = 1;
 	public float maxTimeOtherDamage = 0.5f;
-	public float maxAttackDelay = 0.1f;
+	public float nextAttackDelay = 0.5f;
+	public float animationAttackDelay = 0.25f;
 	
 	//Variaveis
 	public bool isGrounded = false;
@@ -73,7 +74,7 @@ public class PlayerInput : MonoBehaviour
 			usingTelekinesis = !usingTelekinesis;
 		}
 
-		if (Input.GetKeyDown(KeyCode.Space) && dashDelay <= 0 && dashAvailable)
+		if (Input.GetKeyDown(KeyCode.Space) && dashDelay <= 0 && dashAvailable && dashAcquired)
 		{
 			if (mouse.arm.transform.rotation.z < 0.7f && mouse.arm.transform.rotation.z >= -0.7f){
 				dashRight = true;
@@ -122,9 +123,13 @@ public class PlayerInput : MonoBehaviour
 		
 		if(Input.GetKeyDown(KeyCode.E)) battleMode = false;
 		
-		if(Input.GetKeyDown(KeyCode.Mouse0) && (battleMode = true) && (attackDelay <= 0)){ // Ativa a variavel ataque
+		if(Input.GetKeyDown(KeyCode.Mouse0) && (battleMode == true) && (attackDelay <= 0)){ // Ativa a variavel ataque
 			attack = true;
 		}
+		
+		if(attackDelay <= nextAttackDelay - animationAttackDelay){
+			anim.SetBool("Attack", false);
+		} 
     }
 
 	//Colisoes
@@ -153,8 +158,11 @@ public class PlayerInput : MonoBehaviour
 		}
 		if (Vector2.Angle(normal, new Vector2(0f, -1f)) < 10f)
 			speed.y = 0;
-		if(col.otherCollider.gameObject.tag == "Attack" && col.gameObject.tag == "Enemy"){ // rotina de ataque
-			print("ola");
+		if(col.otherCollider.gameObject.tag == "Attack" && col.gameObject.tag == "Enemy"){ // rotina de ataque em inimigos normais
+			col.gameObject.GetComponent<Enemy1Behavior>().TakeDamage(1);
+		}
+		if(col.otherCollider.gameObject.tag == "Attack" && col.gameObject.tag == "Boss"){ // rotina de ataque no boss
+			col.gameObject.GetComponent<BossBehavior>().TakeDamage(1);
 		}
     }
 	
@@ -239,8 +247,9 @@ public class PlayerInput : MonoBehaviour
 			body.velocity = speed;
 			
 			if(attack){
-				attackDelay = maxAttackDelay;
-				
+				attackDelay = nextAttackDelay;
+				attack = false;
+				anim.SetBool("Attack", true);
 			}
 			attackDelay -= Time.deltaTime;
 		//}
@@ -249,7 +258,7 @@ public class PlayerInput : MonoBehaviour
 	
 	public void TakeDamage(int damage, bool _isPushed, float _angleOfPush){
 		//Animacao, ficar piscando por maxDamageTime
-		if(timeOtherDamage <= 0){	
+		if(timeOtherDamage <= 0){
 			health -= damage;
 			if(_isPushed){
 				speed.x = Mathf.Cos(_angleOfPush*Mathf.PI/180);
