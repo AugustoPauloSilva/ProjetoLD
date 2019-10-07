@@ -10,9 +10,12 @@ public class BossBehavior : MonoBehaviour
     public float meleeRange = 15f;
     public float meleeDelay = 10f;
     public float rangedSpeed = 2000f;
+    public float bombYSpeed = 50f;
+    public int attackCycle = 3;
     public GameObject arm;
     public GameObject ranged;
     public GameObject[] rangeds;
+    public GameObject bombOrigin;
     float walked = 0f;
     float walkTimer = 0f;
     float meleeTimer = 0f;
@@ -23,9 +26,11 @@ public class BossBehavior : MonoBehaviour
     float finishAngle = -20f;
     float rangedFinish = 100f;
     float rangedTravel = 0f;
+    int attackCount = 0;
     bool hasAttacked = true;
     bool meleeAttack = false;
     bool rangedAttack = false;
+    bool bombAttack = false;
     Vector3 rangedOffset;
     PlayerInput playerScript;
     Rigidbody2D body;
@@ -44,7 +49,14 @@ public class BossBehavior : MonoBehaviour
         if (walked >= walkDistance && !hasAttacked){
             meleeAttack = false;
             rangedAttack = false;
-            if (Mathf.Abs(distance) < meleeRange){
+            bombAttack = false;
+            attackCount++;
+            if (attackCount > attackCycle){
+                bombAttack = true;
+                hasAttacked = true;
+                attackCount = 0;
+            }
+            else if (Mathf.Abs(distance) < meleeRange){
                 meleeAttack = true;
                 hasAttacked = true;
                 usedAngle = initAngle;
@@ -85,6 +97,9 @@ public class BossBehavior : MonoBehaviour
             }
             else if (rangedAttack){
                 rangedActivate();
+            }
+            else if (bombAttack){
+                bombActivate();
             }
         }
     }
@@ -179,5 +194,13 @@ public class BossBehavior : MonoBehaviour
                 rangeds[4].SetActive(false);
             }
         }
+    }
+    void bombActivate(){
+        Vector3 aux2 = transform.position;
+        aux2.x += 5*direction;
+        aux2.z = -1;
+        GameObject aux = Instantiate(bombOrigin,aux2,transform.rotation);
+        aux.GetComponent<Rigidbody2D>().velocity = new Vector2(direction*0.5f*bombYSpeed,bombYSpeed);
+        bombAttack = false;
     }
 }

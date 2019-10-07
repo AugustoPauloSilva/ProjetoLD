@@ -9,7 +9,7 @@ public class ClickDrag : MonoBehaviour
     public float bigDistance = 5f;
     public float smallDistance = 0.5f;
     float usedSpeed = 0f;
-    bool isDragging = false;
+    public bool isDragging = false;
     Rigidbody2D body;
     Vector3 mousePos;
     RaycastHit2D hit2;
